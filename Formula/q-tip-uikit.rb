@@ -1,4 +1,4 @@
-class QTipUIKit < Formula
+class QTipUikit < Formula
   desc "A mod for Q-Tip that provides UI"
   homepage "https://github.com/ProPythonCoderAya/homebrew-q-tip-uikit"
   url "NaN"
