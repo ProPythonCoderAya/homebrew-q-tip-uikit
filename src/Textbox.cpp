@@ -2,7 +2,7 @@
 // Created by Ayaan on 2026-08-30.
 //
 
-#include "UI/Textbox.h"
+#include "Textbox.h"
 
 #include <algorithm>
 
@@ -10,10 +10,11 @@
 
 #include <SDL3/SDL.h>
 
-#include "Q-Tip/UI/UIObject.h"
+#include "UIObject.h"
 
-QTIP_CODE_BEGIN
-    std::string defaultFontPath() {
+using namespace QTip;
+
+std::string defaultFontPath() {
 #ifdef _WIN32
     return "C:/Windows/Fonts/Arial.ttf";
 #elif defined(__linux__)
@@ -1165,5 +1166,3 @@ void Textbox::scrollCaretIntoView() {
         maxScroll.y
     );
 }
-
-QTIP_CODE_END

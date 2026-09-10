@@ -11,22 +11,20 @@
 
 #include <Q-Tip/Config.h>
 
-#include "UIObject.h"
-#include "Q-Tip//Types/Lazy.h"
-#include "Q-Tip/Graphics/Font.h"
-#include "Q-Tip/Graphics/Shapes/Rect.h"
-#include "Q-Tip/Window/Window.h"
-
-QTIP_CODE_BEGIN
+#include <UIObject.h>
+#include <Q-Tip//Types/Lazy.h>
+#include <Q-Tip/Graphics/Font.h>
+#include <Q-Tip/Graphics/Shapes/Rect.h>
+#include <Q-Tip/Window/Window.h>
 
 class Textbox : public UIObject {
 MODDABLE_DERIVED(Textbox, UIObject)
 
 public:
-    Textbox(float x, float y, float width, float height, const std::optional<Font>& font);
-    Textbox(Rect rect, const std::optional<Font>& font);
+    Textbox(float x, float y, float width, float height, const std::optional<QTip::Font>& font);
+    Textbox(QTip::Rect rect, const std::optional<QTip::Font>& font);
 
-    void render(Window& window);
+    void render(QTip::Window& window);
 
     void handleEvent(const SDL_Event& event) override;
 
@@ -39,12 +37,12 @@ public:
     void setText(const std::string& text);
 
     void resize(float width, float height);
-    void resize(const Point& size);
-    [[nodiscard]] Point getSize() const;
+    void resize(const QTip::Point& size);
+    [[nodiscard]] QTip::Point getSize() const;
 
 private:
-    Rect _rect{};
-    Font _font;
+    QTip::Rect _rect{};
+    QTip::Font _font;
 
     float _fontHeight = 0;
 
@@ -60,7 +58,7 @@ private:
 
     std::string _text;
 
-    Point _scroll = {0, 0};
+    QTip::Point _scroll = {0, 0};
 
     void setMinHeight();
 
@@ -130,7 +128,7 @@ private:
 
     void scrollCaretIntoView();
 
-    Lazy<Point> _textSize{[this] {
+    Lazy<QTip::Point> _textSize{[this] {
         float width = 0;
         float height = _fontHeight;
 
@@ -155,11 +153,11 @@ private:
             _font.getTextWidth(line)
         );
 
-        return Point{width, height};
+        return QTip::Point{width, height};
     }, &_text};
 
-    Lazy<Point> _scrollMaxSize{[this] {
-        const Point size = _textSize;
+    Lazy<QTip::Point> _scrollMaxSize{[this] {
+        const QTip::Point size = _textSize;
 
         const float x =
             std::max(
@@ -173,10 +171,8 @@ private:
                 size.y - (_rect.size.y - 10.0f)
             );
 
-        return Point{x, y};
+        return QTip::Point{x, y};
     }, &_rect, &_text};
 };
-
-QTIP_CODE_END
 
 #endif //QTIP_TEXTBOX_H
