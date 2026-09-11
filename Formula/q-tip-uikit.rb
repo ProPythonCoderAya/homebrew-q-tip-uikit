@@ -7,7 +7,7 @@ class QTipUikit < Formula
   license "MIT"
 
   depends_on "cmake"
-  depends_on "q-tip"
+  depends_on "propythoncoderaya/q-tip/q-tip"
 
   def install
     system "cmake", "-S", ".", "-B", "build",

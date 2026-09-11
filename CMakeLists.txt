@@ -16,10 +16,14 @@ include(GNUInstallDirs)
 
 add_library(QTipUIKit STATIC
     include/UIObject.h
-    include/Textbox.h
-    src/Textbox.cpp
+        include/Textbox/Textbox.h
+        src/Textbox/Textbox.cpp
         include/UIKit.h
         src/UIKit.cpp
+        src/Button/Button.cpp
+        include/Button/Button.h
+        include/Internal/Helpers.h
+        include/UIKitMod.h
 )
 
 add_library(QTipUIKit::QTipUIKit ALIAS QTipUIKit)

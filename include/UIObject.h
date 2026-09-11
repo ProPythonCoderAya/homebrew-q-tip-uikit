@@ -8,7 +8,7 @@
 #include <Q-Tip/Window/Window.h>
 #include <Q-Tip/Mods/ModLoader/ModLoader.h>
 
-#include "UIKit.h"
+#include "UIKitMod.h"
 
 union SDL_Event;
 struct SDL_Window;

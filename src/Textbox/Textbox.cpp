@@ -2,7 +2,7 @@
 // Created by Ayaan on 2026-08-30.
 //
 
-#include "Textbox.h"
+#include "Textbox/Textbox.h"
 
 #include <algorithm>
 
@@ -11,20 +11,9 @@
 #include <SDL3/SDL.h>
 
 #include "UIObject.h"
+#include "Internal/Helpers.h"
 
 using namespace QTip;
-
-std::string defaultFontPath() {
-#ifdef _WIN32
-    return "C:/Windows/Fonts/Arial.ttf";
-#elif defined(__linux__)
-    return "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf";
-#elif defined(__APPLE__)
-    return "/System/Library/Fonts/Supplemental/Arial.ttf";
-#else
-#error "Unsupported platform"
-#endif
-}
 
 
 // ============================================================
@@ -37,7 +26,7 @@ Textbox::Textbox(
     float width,
     float height,
     const std::optional<Font>& font
-) : _font(defaultFontPath(), 16) {
+) : _font(Detail::defaultFontPath(), 16) {
 
     if (font.has_value()) {
         _font.destroy();
@@ -55,7 +44,7 @@ Textbox::Textbox(
 Textbox::Textbox(
     const Rect rect,
     const std::optional<Font>& font
-) : _font(defaultFontPath(), 16) {
+) : _font(Detail::defaultFontPath(), 16) {
 
     if (font.has_value()) {
         _font.destroy();
