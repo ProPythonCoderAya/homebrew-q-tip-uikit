@@ -15,6 +15,14 @@ struct ButtonStyle {
     QTip::Color disabledColor;
 
     QTip::Font font{Detail::defaultFontPath(), 16};
+    QTip::Color fontColor;
+};
+
+enum class ButtonState {
+    Normal,
+    Hovered,
+    Pressed,
+    Disabled
 };
 
 class Button : public UIObject {
@@ -26,10 +34,28 @@ public:
 
     void handleEvent(const SDL_Event& event) override;
 
+    void render(QTip::Window& window) override;
+
+    void setText(std::string text);
+    [[nodiscard]] const std::string& text() const;
+
+    void resize(QTip::Rect rect);
+    [[nodiscard]] const QTip::Rect& rect() const;
+
+    void setOnClick(std::function<void()> callback);
+
+    void disable();
+    void enable();
+    [[nodiscard]] bool isDisabled() const;
+
 private:
     ButtonStyle _style;
+    ButtonState _state = ButtonState::Normal;
     std::string _text;
     QTip::Rect _rect{};
+    std::function<void()> _onClick;
+
+    bool _disabled = false;
 };
 
 #endif //QTIPUIKIT_BUTTON_H

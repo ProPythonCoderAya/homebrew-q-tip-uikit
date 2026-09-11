@@ -23,6 +23,7 @@ public:
 
     virtual ~UIObject() = default;
 
+    virtual void render(QTip::Window& window) = 0;
     virtual void handleEvent(const SDL_Event& event) = 0;
 protected:
     static SDL_Window* window(QTip::Window& window) {

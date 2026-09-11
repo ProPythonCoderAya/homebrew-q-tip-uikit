@@ -22,7 +22,7 @@ public:
     Textbox(float x, float y, float width, float height, const std::optional<QTip::Font>& font);
     Textbox(QTip::Rect rect, const std::optional<QTip::Font>& font);
 
-    void render(QTip::Window& window);
+    void render(QTip::Window& window) override;
 
     void handleEvent(const SDL_Event& event) override;
 
