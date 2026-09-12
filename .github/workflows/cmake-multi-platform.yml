@@ -64,6 +64,7 @@ jobs:
 
       - name: Install Q-Tip
         run: |
+          brew trust propythoncoderaya/q-tip
           brew tap ProPythonCoderAya/q-tip
           brew install q-tip
 
