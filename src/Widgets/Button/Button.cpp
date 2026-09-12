@@ -2,7 +2,7 @@
 // Created by Ayaan on 2026-09-11.
 //
 
-#include "Button/Button.h"
+#include "Widgets/Button/Button.h"
 
 #include <SDL3/SDL_events.h>
 
@@ -38,11 +38,14 @@ void Button::handleEvent(const SDL_Event& event) {
         break;
     case SDL_EVENT_MOUSE_BUTTON_UP:
         if (_state == ButtonState::Pressed) {
-            _state = ButtonState::Hovered;
             if (_rect.isPointInside({
                 event.button.x,
                 event.button.y
-            }) && _onClick) _onClick();
+            })) {
+                if (_onClick) _onClick();
+                _state = ButtonState::Hovered;
+            } else
+                _state = ButtonState::Normal;
         }
         break;
     case SDL_EVENT_MOUSE_MOTION:
@@ -50,10 +53,12 @@ void Button::handleEvent(const SDL_Event& event) {
             event.motion.x,
             event.motion.y
         })) {
-            _state = ButtonState::Hovered;
+            if (_state != ButtonState::Pressed)
+                _state = ButtonState::Hovered;
         }
         else {
-            _state = ButtonState::Normal;
+            if (_state != ButtonState::Pressed)
+                _state = ButtonState::Normal;
         }
         break;
     }
@@ -100,13 +105,22 @@ void Button::setOnClick(std::function<void()> callback) {
 }
 
 void Button::disable() {
+    if (!_disabled)
+        _state = ButtonState::Disabled;
     _disabled = true;
-    _state = ButtonState::Disabled;
 }
 
 void Button::enable() {
+    if (_disabled)
+        _state = ButtonState::Normal;
     _disabled = false;
-    _state = ButtonState::Normal;
+}
+
+void Button::setDisabled(bool disabled) {
+    if (disabled)
+        disable();
+    else
+        enable();
 }
 
 bool Button::isDisabled() const {

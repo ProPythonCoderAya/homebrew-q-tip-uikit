@@ -2,7 +2,7 @@
 // Created by Ayaan on 2026-08-30.
 //
 
-#include "Textbox/Textbox.h"
+#include "Widgets/Textbox/Textbox.h"
 
 #include <algorithm>
 

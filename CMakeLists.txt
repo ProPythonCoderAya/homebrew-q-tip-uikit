@@ -15,15 +15,19 @@ find_package(SDL3 REQUIRED)
 include(GNUInstallDirs)
 
 add_library(QTipUIKit STATIC
-    include/UIObject.h
-        include/Textbox/Textbox.h
-        src/Textbox/Textbox.cpp
+        include/UIObject.h
+        include/Widgets/Textbox/Textbox.h
+        src/Widgets/Textbox/Textbox.cpp
         include/UIKit.h
         src/UIKit.cpp
-        src/Button/Button.cpp
-        include/Button/Button.h
+        src/Widgets/Button/Button.cpp
+        include/Widgets/Button/Button.h
         include/Internal/Helpers.h
         include/UIKitMod.h
+        include/Widgets/Checkbox/Checkbox.h
+        src/Widgets/Checkbox/Checkbox.cpp
+        src/Widgets/Label/Label.cpp
+        include/Widgets/Label/Label.h
 )
 
 add_library(QTipUIKit::QTipUIKit ALIAS QTipUIKit)

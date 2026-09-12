@@ -15,6 +15,17 @@ int main() {
         font
     );
 
+    CheckboxStyle checkboxStyle;
+    checkboxStyle.color = Color{50, 50, 50, 255};
+    checkboxStyle.hoverColor = Color{70, 70, 70, 255};
+    checkboxStyle.pressedColor = Color{30, 30, 30, 255};
+    checkboxStyle.disabledColor = Color{20, 20, 20, 255};
+
+    Checkbox checkbox({240, 520, 20, 20}, checkboxStyle);
+    checkbox.checked = true;
+
+    Label checkboxLabel("Button Enabled", Color::white, {270, 520}, font);
+
     ButtonStyle buttonStyle;
     buttonStyle.font = font;
     buttonStyle.color = Color{50, 50, 50, 255};
@@ -31,7 +42,7 @@ int main() {
 
     button.setOnClick([&] {
         textbox.setText("Button clicked!");
-        button.disable();
+        checkbox.checked = false;
     });
 
     Point size = window.size();
@@ -40,7 +51,7 @@ int main() {
         window.pollEvents();
 
         if (window.input().keyWasPressed(Key::Key_ESCAPE))
-            button.enable();
+            checkbox.checked = true;
 
         if (window.size() != size) {
             size = window.size();
@@ -56,13 +67,34 @@ int main() {
                 200,
                 60
             });
+
+            checkbox.resize({
+                240,
+                size.y - 60,
+                20,
+                20
+            });
+
+            checkboxLabel.reposition({
+                270,
+                size.y - 60
+            });
         }
+
+        button.setDisabled(!checkbox.checked); // disable if NOT checked
+
+        if (checkbox.checked)
+            checkboxLabel.setText("Button Enabled");
+        else
+            checkboxLabel.setText("Button Disabled");
 
         window->setRenderColor(Color::black);
         window->clear();
 
         textbox.render(window);
         button.render(window);
+        checkbox.render(window);
+        checkboxLabel.render(window);
 
         window->present();
     }

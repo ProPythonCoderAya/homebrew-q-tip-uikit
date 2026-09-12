@@ -6,8 +6,10 @@
 #define QTIPUIKIT_UIKIT_H
 
 #include <UIKitMod.h>
-#include <Textbox/Textbox.h>
-#include <Button/Button.h>
+#include <Widgets/Textbox/Textbox.h>
+#include <Widgets/Button/Button.h>
+#include <Widgets/Checkbox/Checkbox.h>
+#include <Widgets/Label/Label.h>
 #include <UIObject.h>
 
 #endif //QTIPUIKIT_UIKIT_H

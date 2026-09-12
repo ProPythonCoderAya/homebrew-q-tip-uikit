@@ -46,6 +46,7 @@ public:
 
     void disable();
     void enable();
+    void setDisabled(bool disabled);
     [[nodiscard]] bool isDisabled() const;
 
 private:
