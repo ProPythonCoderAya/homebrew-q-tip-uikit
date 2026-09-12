@@ -28,6 +28,8 @@ add_library(QTipUIKit STATIC
         src/Widgets/Checkbox/Checkbox.cpp
         src/Widgets/Label/Label.cpp
         include/Widgets/Label/Label.h
+        src/Layout/Panel.cpp
+        include/Layout/Panel.h
 )
 
 add_library(QTipUIKit::QTipUIKit ALIAS QTipUIKit)
