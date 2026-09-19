@@ -23,8 +23,29 @@ void Label::render(QTip::Window& window) {
         window->renderText(_font, _text.c_str(), _position.x, _position.y, _color);
 }
 
+QTip::Point Label::minimumSize() const {
+    return _font.getTextSize(_text); // we dont scale
+}
+
+QTip::Point Label::preferredSize() const {
+    return _font.getTextSize(_text); // we dont scale
+}
+
+void Label::resize(QTip::Point size) {
+    // do nothing, cannot resize
+}
+
 void Label::reposition(QTip::Point position) {
     _position = position;
+}
+
+void Label::setRect(QTip::Rect rect) {
+    _position = rect.origin; // the best we can do
+}
+
+const QTip::Rect& Label::rect() {
+    _rect = {_position, _font.getTextSize(_text)};
+    return _rect;
 }
 
 void Label::setText(const std::string& text) {

@@ -25,10 +25,17 @@ public:
     void shutdown() override;
 
     void handleEvent(const SDL_Event& event) override;
+
+    static UIKitMod* instance();
 private:
     std::vector<UIObject*> _objects;
 
+    bool _addingChildren = false;
+
+    void add(UIObject* object);
+
     friend class UIObject;
+    friend class Panel;
 };
 
 #endif //QTIPUIKIT_UIKITMOD_H

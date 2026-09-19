@@ -92,11 +92,27 @@ const std::string& Button::text() const {
     return _text;
 }
 
-void Button::resize(QTip::Rect rect) {
+QTip::Point Button::minimumSize() const {
+    return _style.font.getTextSize(_text) + QTip::Point{10, 10}; // 5 px margin on all sides
+}
+
+QTip::Point Button::preferredSize() const {
+    return _rect.size; // we want what the user had set
+}
+
+void Button::resize(QTip::Point size) {
+    _rect.size = size;
+}
+
+void Button::reposition(QTip::Point position) {
+    _rect.origin = position;
+}
+
+void Button::setRect(QTip::Rect rect) {
     _rect = rect;
 }
 
-const QTip::Rect& Button::rect() const {
+const QTip::Rect& Button::rect() {
     return _rect;
 }
 

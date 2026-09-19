@@ -5,7 +5,10 @@
 #ifndef QTIPUIKIT_HELPERS_H
 #define QTIPUIKIT_HELPERS_H
 #include <filesystem>
+#include <Q-Tip/Math/Point.h>
 namespace fs = std::filesystem;
+
+union SDL_Event;
 
 namespace Detail {
     inline fs::path defaultFontPath() {
@@ -19,6 +22,8 @@ namespace Detail {
 #error "Unsupported platform"
 #endif
     }
+
+    SDL_Event transformEvent(const SDL_Event& event, const QTip::Point& position);
 }
 
 #endif //QTIPUIKIT_HELPERS_H

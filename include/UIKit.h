@@ -12,4 +12,6 @@
 #include <Widgets/Label/Label.h>
 #include <UIObject.h>
 
+#include <Layout/Panel.h>
+
 #endif //QTIPUIKIT_UIKIT_H

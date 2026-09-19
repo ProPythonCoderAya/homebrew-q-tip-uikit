@@ -14,7 +14,13 @@ public:
 
     void render(QTip::Window& window) override;
 
-    void reposition(QTip::Point position);
+    [[nodiscard]] QTip::Point minimumSize() const override;
+    [[nodiscard]] QTip::Point preferredSize() const override;
+
+    void resize(QTip::Point size) override;
+    void reposition(QTip::Point position) override;
+    void setRect(QTip::Rect rect) override;
+    [[nodiscard]] const QTip::Rect& rect() override;
 
     void setText(const std::string& text);
     [[nodiscard]] const std::string& text() const;

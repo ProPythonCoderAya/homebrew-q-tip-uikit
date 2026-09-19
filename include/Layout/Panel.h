@@ -6,7 +6,7 @@
 #define QTIPUIKIT_PANEL_H
 #include "UIObject.h"
 
-class Panel : UIObject {
+class Panel : public UIObject {
 public:
     Panel(QTip::Rect rect);
 
@@ -18,9 +18,11 @@ public:
 
     template<std::derived_from<UIObject> T, typename... Args>
     T& add(Args&&... args) {
+        UIKitMod::instance()->_addingChildren = true;
         auto object = std::make_unique<T>(
             std::forward<Args>(args)...
         );
+        UIKitMod::instance()->_addingChildren = false;
 
         T& result = *object;
         _objects.push_back(std::move(object));
@@ -31,6 +33,14 @@ public:
     void remove(UIObject& object);
 
     void clear();
+
+    [[nodiscard]] QTip::Point minimumSize() const override;
+    [[nodiscard]] QTip::Point preferredSize() const override;
+
+    void resize(QTip::Point size) override;
+    void reposition(QTip::Point position) override;
+    void setRect(QTip::Rect rect) override;
+    [[nodiscard]] const QTip::Rect& rect() override;
 
 private:
     QTip::Rect _rect{};

@@ -8,10 +8,12 @@ int main() {
 
     Window window("UIKit Test", 800, 600);
 
+    Panel panel({10, 10, 780, 580});
+
     Font font("/System/Library/Fonts/SFNSMono.ttf", 20);
 
-    Textbox textbox(
-        {20, 20, 760, 460},
+    auto& textbox = panel.add<Textbox>(
+        Rect{20, 20, 760, 460},
         font
     );
 
@@ -21,10 +23,10 @@ int main() {
     checkboxStyle.pressedColor = Color{30, 30, 30, 255};
     checkboxStyle.disabledColor = Color{20, 20, 20, 255};
 
-    Checkbox checkbox({240, 520, 20, 20}, checkboxStyle);
+    auto& checkbox = panel.add<Checkbox>(Rect{240, 520, 20, 20}, checkboxStyle);
     checkbox.checked = true;
 
-    Label checkboxLabel("Button Enabled", Color::white, {270, 520}, font);
+    auto& checkboxLabel = panel.add<Label>("Button Enabled", Color::white, Point{270, 520}, font);
 
     ButtonStyle buttonStyle;
     buttonStyle.font = font;
@@ -34,8 +36,8 @@ int main() {
     buttonStyle.disabledColor = Color{20, 20, 20, 255};
     buttonStyle.fontColor = Color::white;
 
-    Button button(
-        {20, 500, 200, 60},
+    auto& button = panel.add<Button>(
+        Rect{20, 500, 200, 60},
         "Click me",
         buttonStyle
     );
@@ -45,7 +47,7 @@ int main() {
         checkbox.checked = false;
     });
 
-    Point size = window.size();
+    Point windowSize = window.size();
 
     while (!window.shouldClose()) {
         window.pollEvents();
@@ -53,26 +55,24 @@ int main() {
         if (window.input().keyWasPressed(Key::Key_ESCAPE))
             checkbox.checked = true;
 
-        if (window.size() != size) {
-            size = window.size();
+        if (window.size() != windowSize) {
+            windowSize = window.size();
+            panel.resize(windowSize - Point{20, 20});
+            Point size = panel.rect().size;
 
             textbox.resize({
                 size.x - 40,
                 460
             });
 
-            button.resize({
+            button.reposition({
                 20,
-                size.y - 80,
-                200,
-                60
+                size.y - 80
             });
 
-            checkbox.resize({
+            checkbox.reposition({
                 240,
-                size.y - 60,
-                20,
-                20
+                size.y - 60
             });
 
             checkboxLabel.reposition({
@@ -91,10 +91,7 @@ int main() {
         window->setRenderColor(Color::black);
         window->clear();
 
-        textbox.render(window);
-        button.render(window);
-        checkbox.render(window);
-        checkboxLabel.render(window);
+        panel.render(window);
 
         window->present();
     }

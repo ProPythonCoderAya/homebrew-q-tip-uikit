@@ -34,9 +34,13 @@ public:
     [[nodiscard]] std::string getText() const;
     void setText(const std::string& text);
 
-    void resize(float width, float height);
-    void resize(const QTip::Point& size);
-    [[nodiscard]] QTip::Point getSize() const;
+    [[nodiscard]] QTip::Point minimumSize() const override;
+    [[nodiscard]] QTip::Point preferredSize() const override;
+
+    void resize(QTip::Point size) override;
+    void reposition(QTip::Point position) override;
+    void setRect(QTip::Rect rect) override;
+    const QTip::Rect& rect() override;
 
 private:
     QTip::Rect _rect{};

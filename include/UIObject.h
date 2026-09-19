@@ -18,14 +18,24 @@ MODDABLE_ROOT(UIObject)
 
 public:
     UIObject() {
-        QTip::ModLoader::mod<UIKitMod>()->_objects.push_back(this);
+        UIKitMod::instance()->add(this);
     }
 
     virtual ~UIObject() = default;
 
     virtual void render(QTip::Window& window) = 0;
     virtual void handleEvent(const SDL_Event& event) {}
+
+    [[nodiscard]] virtual QTip::Point minimumSize() const = 0;
+    [[nodiscard]] virtual QTip::Point preferredSize() const = 0;
+
+    virtual void resize(QTip::Point size) = 0;
+    virtual void reposition(QTip::Point position) = 0;
+    virtual void setRect(QTip::Rect rect) = 0;
+    [[nodiscard]] virtual const QTip::Rect& rect() = 0;
+
 protected:
+    QTip::Rect _rect{};
     static SDL_Window* window(QTip::Window& window) {
         return window;
     }

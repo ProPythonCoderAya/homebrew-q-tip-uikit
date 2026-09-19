@@ -84,11 +84,27 @@ void Checkbox::render(QTip::Window& window) {
         renderCheckmark(window, {_rect.origin + QTip::Point{5, 5}, _rect.size - QTip::Point{10, 10}});
 }
 
-void Checkbox::resize(QTip::Rect rect) {
+QTip::Point Checkbox::minimumSize() const {
+    return {20, 20}; // only best size
+}
+
+QTip::Point Checkbox::preferredSize() const {
+    return _rect.size; // we want what the user had set
+}
+
+void Checkbox::resize(QTip::Point size) {
+    _rect.size = size;
+}
+
+void Checkbox::reposition(QTip::Point position) {
+    _rect.origin = position;
+}
+
+void Checkbox::setRect(QTip::Rect rect) {
     _rect = rect;
 }
 
-const QTip::Rect& Checkbox::rect() const {
+const QTip::Rect& Checkbox::rect() {
     return _rect;
 }
 

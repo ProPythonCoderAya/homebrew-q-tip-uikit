@@ -33,8 +33,13 @@ public:
 
     void render(QTip::Window& window) override;
 
-    void resize(QTip::Rect rect);
-    [[nodiscard]] const QTip::Rect& rect() const;
+    [[nodiscard]] QTip::Point minimumSize() const override;
+    [[nodiscard]] QTip::Point preferredSize() const override;
+
+    void resize(QTip::Point rect) override;
+    void reposition(QTip::Point position) override;
+    void setRect(QTip::Rect rect) override;
+    [[nodiscard]] const QTip::Rect& rect() override;
 
     void disable();
     void enable();

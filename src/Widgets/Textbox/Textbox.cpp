@@ -595,17 +595,16 @@ void Textbox::setText(const std::string& text) {
     scrollCaretIntoView();
 }
 
-void Textbox::resize(float width, float height) {
-    _rect.size.x = width;
-    _rect.size.y = height;
-
-    setMinHeight();
-
-    _scroll = {0, 0};
-    scrollCaretIntoView();
+Point Textbox::minimumSize() const {
+    return {_font.getTextWidth(getText()), _fontHeight * 2}; // later when flags are added,
+                                                                      // this will be dynamic.
 }
 
-void Textbox::resize(const Point& size) {
+Point Textbox::preferredSize() const {
+    return _rect.size;
+}
+
+void Textbox::resize(Point size) {
     _rect.size = size;
 
     setMinHeight();
@@ -614,8 +613,21 @@ void Textbox::resize(const Point& size) {
     scrollCaretIntoView();
 }
 
-Point Textbox::getSize() const {
-    return _rect.size;
+void Textbox::reposition(Point position) {
+    _rect.origin = position;
+}
+
+void Textbox::setRect(Rect rect) {
+    _rect = rect;
+
+    setMinHeight();
+
+    _scroll = {0, 0};
+    scrollCaretIntoView();
+}
+
+const Rect& Textbox::rect() {
+    return _rect;
 }
 
 

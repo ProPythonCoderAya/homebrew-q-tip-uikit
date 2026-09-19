@@ -1,11 +1,9 @@
 #include <UIKitMod.h>
 #include <UIObject.h>
 
-UIKitMod::UIKitMod() {
-}
+UIKitMod::UIKitMod() = default;
 
-UIKitMod::~UIKitMod() {
-}
+UIKitMod::~UIKitMod() = default;
 
 std::string_view UIKitMod::id() const {
     return "propythoncoderaya/uikit";
@@ -25,4 +23,13 @@ void UIKitMod::handleEvent(const SDL_Event& event) {
     for (auto* mod : _objects) {
         mod->handleEvent(event);
     }
+}
+
+UIKitMod* UIKitMod::instance() {
+    return QTip::ModLoader::mod<UIKitMod>();
+}
+
+void UIKitMod::add(UIObject* object) {
+    if (_addingChildren) return;
+    _objects.push_back(object);
 }
