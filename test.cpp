@@ -1,6 +1,8 @@
 #include <Q-Tip/QTip.h>
 #include <UIKit.h>
 
+#include "Layout/HBox.h"
+
 using namespace QTip;
 
 int main() {
@@ -17,16 +19,20 @@ int main() {
         font
     );
 
-    CheckboxStyle checkboxStyle;
-    checkboxStyle.color = Color{50, 50, 50, 255};
-    checkboxStyle.hoverColor = Color{70, 70, 70, 255};
-    checkboxStyle.pressedColor = Color{30, 30, 30, 255};
-    checkboxStyle.disabledColor = Color{20, 20, 20, 255};
+    auto& hbox = panel.add<HBox>(Rect{20, 500, 760, 60});
+    hbox.setSpacing(10);
+    hbox.setSizing(Detail::Box::Sizing::Stretch);
+    
+    Point windowSize = window.size();
+    panel.resize(windowSize - Point{20, 20});
+    Point size = panel.rect().size;
 
-    auto& checkbox = panel.add<Checkbox>(Rect{240, 520, 20, 20}, checkboxStyle);
-    checkbox.checked = true;
+    textbox.resize({
+        size.x - 40,
+        460
+    });
 
-    auto& checkboxLabel = panel.add<Label>("Button Enabled", Color::white, Point{270, 520}, font);
+    hbox.resize({size.x - 20, hbox.rect().size.y});
 
     ButtonStyle buttonStyle;
     buttonStyle.font = font;
@@ -36,18 +42,27 @@ int main() {
     buttonStyle.disabledColor = Color{20, 20, 20, 255};
     buttonStyle.fontColor = Color::white;
 
-    auto& button = panel.add<Button>(
+    auto& button = hbox.add<Button>(
         Rect{20, 500, 200, 60},
         "Click me",
         buttonStyle
     );
 
+    CheckboxStyle checkboxStyle;
+    checkboxStyle.color = Color{50, 50, 50, 255};
+    checkboxStyle.hoverColor = Color{70, 70, 70, 255};
+    checkboxStyle.pressedColor = Color{30, 30, 30, 255};
+    checkboxStyle.disabledColor = Color{20, 20, 20, 255};
+
+    auto& checkbox = hbox.add<Checkbox>(Rect{240, 520, 20, 20}, checkboxStyle);
+    checkbox.checked = true;
+
+    auto& checkboxLabel = hbox.add<Label>("Button Enabled", Color::white, Point{270, 520}, font);
+
     button.setOnClick([&] {
         textbox.setText("Button clicked!");
         checkbox.checked = false;
     });
-
-    Point windowSize = window.size();
 
     while (!window.shouldClose()) {
         window.pollEvents();
@@ -65,20 +80,7 @@ int main() {
                 460
             });
 
-            button.reposition({
-                20,
-                size.y - 80
-            });
-
-            checkbox.reposition({
-                240,
-                size.y - 60
-            });
-
-            checkboxLabel.reposition({
-                270,
-                size.y - 60
-            });
+            hbox.resize({size.x - 20, hbox.rect().size.y});
         }
 
         button.setDisabled(!checkbox.checked); // disable if NOT checked

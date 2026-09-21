@@ -89,15 +89,17 @@ QTip::Point Checkbox::minimumSize() const {
 }
 
 QTip::Point Checkbox::preferredSize() const {
-    return _rect.size; // we want what the user had set
+    return _preferredRect.size; // we want what the user had set
 }
 
 void Checkbox::resize(QTip::Point size) {
     _rect.size = size;
+    _preferredRect.size = size;
 }
 
 void Checkbox::reposition(QTip::Point position) {
     _rect.origin = position;
+    _preferredRect.origin = position;
 }
 
 void Checkbox::setRect(QTip::Rect rect) {
@@ -123,12 +125,16 @@ bool Checkbox::isDisabled() const {
 }
 
 void Checkbox::renderCheckmark(QTip::Window& window, QTip::Rect rect) {
+    auto lastRectSize = rect.size;
+    rect.size = QTip::Point{1, 1} * std::min(rect.size.x, rect.size.y);
+    rect.origin += (lastRectSize - rect.size) / 2.0f;
     QTip::Point a = {0.0f, rect.size.y / 2.0f};
     QTip::Point b = {rect.size.x / 2.0f, rect.size.y};
     QTip::Point c = {rect.size.x, 0.0f};
     a += rect.origin;
     b += rect.origin;
     c += rect.origin;
-    window->renderThickLine({a, b}, rect.size.x / 5.0f, true);
-    window->renderThickLine({c, b}, rect.size.x / 5.0f, true);
+    float thickness = rect.size.x / 5.0f;
+    window->renderThickLine({a, b}, thickness, true);
+    window->renderThickLine({c, b}, thickness, true);
 }

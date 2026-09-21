@@ -601,7 +601,7 @@ Point Textbox::minimumSize() const {
 }
 
 Point Textbox::preferredSize() const {
-    return _rect.size;
+    return _preferredRect.size;
 }
 
 void Textbox::resize(Point size) {
@@ -609,12 +609,15 @@ void Textbox::resize(Point size) {
 
     setMinHeight();
 
+    _preferredRect.size = _rect.size;
+
     _scroll = {0, 0};
     scrollCaretIntoView();
 }
 
 void Textbox::reposition(Point position) {
     _rect.origin = position;
+    _preferredRect.origin = position;
 }
 
 void Textbox::setRect(Rect rect) {

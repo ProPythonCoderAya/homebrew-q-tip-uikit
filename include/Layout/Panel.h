@@ -30,9 +30,9 @@ public:
         return result;
     }
 
-    void remove(UIObject& object);
+    virtual void remove(UIObject& object);
 
-    void clear();
+    virtual void clear();
 
     [[nodiscard]] QTip::Point minimumSize() const override;
     [[nodiscard]] QTip::Point preferredSize() const override;
@@ -42,7 +42,7 @@ public:
     void setRect(QTip::Rect rect) override;
     [[nodiscard]] const QTip::Rect& rect() override;
 
-private:
+protected:
     QTip::Rect _rect{};
     std::vector<std::unique_ptr<UIObject>> _objects;
 };

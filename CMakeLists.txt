@@ -30,7 +30,11 @@ add_library(QTipUIKit STATIC
         include/Widgets/Label/Label.h
         src/Layout/Panel.cpp
         include/Layout/Panel.h
-        src/Helpers.cpp
+        src/Internal/Helpers.cpp
+        include/Layout/HBox.h
+        src/Internal/Box.cpp
+        include/Internal/Box.h
+        include/Layout/VBox.h
 )
 
 add_library(QTipUIKit::QTipUIKit ALIAS QTipUIKit)

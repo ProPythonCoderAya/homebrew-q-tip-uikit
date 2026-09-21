@@ -36,6 +36,7 @@ public:
 
 protected:
     QTip::Rect _rect{};
+    QTip::Rect _preferredRect{};
     static SDL_Window* window(QTip::Window& window) {
         return window;
     }

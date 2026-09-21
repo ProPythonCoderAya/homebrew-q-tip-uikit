@@ -11,12 +11,14 @@
 Button::Button(float x, float y, float width, float height, std::string_view text, const ButtonStyle& style) {
     _style = style;
     _rect = QTip::Rect{x, y, width, height};
+    _preferredRect = _rect;
     _text = std::string(text);
 }
 
 Button::Button(QTip::Rect rect, std::string_view text, const ButtonStyle& style) {
     _style = style;
     _rect = rect;
+    _preferredRect = _rect;
     _text = std::string(text);
 }
 
@@ -97,15 +99,17 @@ QTip::Point Button::minimumSize() const {
 }
 
 QTip::Point Button::preferredSize() const {
-    return _rect.size; // we want what the user had set
+    return _preferredRect.size; // we want what the user had set
 }
 
 void Button::resize(QTip::Point size) {
     _rect.size = size;
+    _preferredRect.size = size;
 }
 
 void Button::reposition(QTip::Point position) {
     _rect.origin = position;
+    _preferredRect.origin = position;
 }
 
 void Button::setRect(QTip::Rect rect) {
