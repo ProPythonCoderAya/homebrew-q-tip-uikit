@@ -93,7 +93,7 @@ install(
 
 install(
     DIRECTORY include/
-    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/Q-Tip/Mods
 )
 
 install(
