@@ -5,7 +5,7 @@
 #ifndef QTIPUIKIT_VBOX_H
 #define QTIPUIKIT_VBOX_H
 
-#include "UIKit/Internal/Box.h"
+#include "QTipUIKit/Internal/Box.h"
 
 class VBox : public Detail::Box {
 public:

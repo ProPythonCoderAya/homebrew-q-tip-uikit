@@ -2,12 +2,12 @@
 // Created by Ayaan on 2026-09-12.
 //
 
-#include "UIKit/Layout/Panel.h"
+#include "QTipUIKit/Layout/Panel.h"
 
 #include <Q-Tip/Graphics/RenderTarget.h>
 #include <SDL3/SDL_events.h>
 
-#include "UIKit/Internal/Helpers.h"
+#include "QTipUIKit/Internal/Helpers.h"
 
 Panel::Panel(const QTip::Rect rect) {
     _rect = rect;

@@ -2,7 +2,7 @@
 // Created by Ayaan on 2026-09-11.
 //
 
-#include "UIKit/Widgets/Checkbox/Checkbox.h"
+#include "QTipUIKit/Widgets/Checkbox/Checkbox.h"
 
 #include <SDL3/SDL_events.h>
 

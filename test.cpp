@@ -1,12 +1,12 @@
 #include <Q-Tip/QTip.h>
-#include "UIKit/UIKit.h"
+#include "QTipUIKit//UIKit.h"
 
 using namespace QTip;
 
 int main() {
     ModLoader::load<UIKitMod>();
 
-    Window window("UIKit Test", 800, 600);
+    Window window("QTipUIKit Test", 800, 600);
 
     Panel panel({10, 10, 780, 580});
 

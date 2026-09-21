@@ -1,5 +1,5 @@
-#include "UIKit/UIKitMod.h"
-#include "UIKit/UIObject.h"
+#include "QTipUIKit/UIKitMod.h"
+#include "QTipUIKit/UIObject.h"
 
 UIKitMod::UIKitMod() = default;
 
@@ -10,7 +10,7 @@ std::string_view UIKitMod::id() const {
 }
 
 std::string_view UIKitMod::name() const {
-    return "UIKit";
+    return "QTipUIKit";
 }
 
 void UIKitMod::init() {

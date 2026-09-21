@@ -2,7 +2,7 @@
 // Created by Ayaan on 2026-08-30.
 //
 
-#include "UIKit/Widgets/Textbox/Textbox.h"
+#include "QTipUIKit/Widgets/Textbox/Textbox.h"
 
 #include <algorithm>
 
@@ -10,8 +10,8 @@
 
 #include <SDL3/SDL.h>
 
-#include "UIKit/UIObject.h"
-#include "UIKit/Internal/Helpers.h"
+#include "QTipUIKit/UIObject.h"
+#include "QTipUIKit/Internal/Helpers.h"
 
 using namespace QTip;
 

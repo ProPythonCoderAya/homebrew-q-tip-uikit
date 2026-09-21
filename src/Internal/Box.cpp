@@ -2,7 +2,7 @@
 // Created by Ayaan on 2026-09-20.
 //
 
-#include "UIKit/Internal/Box.h"
+#include "QTipUIKit/Internal/Box.h"
 
 #include <algorithm>
 #include <numeric>

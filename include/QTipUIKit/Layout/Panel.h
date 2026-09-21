@@ -4,7 +4,7 @@
 
 #ifndef QTIPUIKIT_PANEL_H
 #define QTIPUIKIT_PANEL_H
-#include "UIKit/UIObject.h"
+#include "QTipUIKit/UIObject.h"
 
 class Panel : public UIObject {
 public:

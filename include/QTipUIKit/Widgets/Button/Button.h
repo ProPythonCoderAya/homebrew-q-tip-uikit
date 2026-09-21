@@ -4,9 +4,9 @@
 
 #ifndef QTIPUIKIT_BUTTON_H
 #define QTIPUIKIT_BUTTON_H
-#include "UIKit/UIObject.h"
+#include "QTipUIKit/UIObject.h"
 
-#include "UIKit/Internal/Helpers.h"
+#include "QTipUIKit/Internal/Helpers.h"
 
 struct ButtonStyle {
     QTip::Color color;

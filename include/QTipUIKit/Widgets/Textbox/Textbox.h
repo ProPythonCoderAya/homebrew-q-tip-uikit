@@ -9,7 +9,7 @@
 #include <optional>
 #include <string>
 
-#include "UIKit/UIObject.h"
+#include "QTipUIKit/UIObject.h"
 #include <Q-Tip/Types/Lazy.h>
 #include <Q-Tip/Graphics/Font.h>
 #include <Q-Tip/Graphics/Shapes/Rect.h>
