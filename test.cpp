@@ -1,7 +1,5 @@
 #include <Q-Tip/QTip.h>
-#include <UIKit.h>
-
-#include "Layout/HBox.h"
+#include "UIKit/UIKit.h"
 
 using namespace QTip;
 
@@ -22,7 +20,7 @@ int main() {
     auto& hbox = panel.add<HBox>(Rect{20, 500, 760, 60});
     hbox.setSpacing(10);
     hbox.setSizing(Detail::Box::Sizing::Stretch);
-    
+
     Point windowSize = window.size();
     panel.resize(windowSize - Point{20, 20});
     Point size = panel.rect().size;
@@ -73,7 +71,7 @@ int main() {
         if (window.size() != windowSize) {
             windowSize = window.size();
             panel.resize(windowSize - Point{20, 20});
-            Point size = panel.rect().size;
+            size = panel.rect().size;
 
             textbox.resize({
                 size.x - 40,

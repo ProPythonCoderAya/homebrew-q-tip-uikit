@@ -2,9 +2,9 @@
 // Created by Ayaan on 2026-09-12.
 //
 
-#include "Widgets/Label/Label.h"
+#include "UIKit/Widgets/Label/Label.h"
 
-#include "Internal/Helpers.h"
+#include "UIKit/Internal/Helpers.h"
 
 Label::Label(const std::string& text, QTip::Color color, QTip::Point position, const std::optional<QTip::Font>& font, bool centered) : _font(Detail::defaultFontPath(), 16) {
     if (font.has_value()) {

@@ -4,7 +4,7 @@
 
 #ifndef QTIPUIKIT_LABEL_H
 #define QTIPUIKIT_LABEL_H
-#include <UIObject.h>
+#include "UIKit/UIObject.h"
 
 class Label : public UIObject {
 MODDABLE_DERIVED(Label, UIObject)

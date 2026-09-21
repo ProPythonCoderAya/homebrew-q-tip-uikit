@@ -5,7 +5,7 @@
 #ifndef QTIPUIKIT_HBOX_H
 #define QTIPUIKIT_HBOX_H
 
-#include "Internal/Box.h"
+#include "UIKit/Internal/Box.h"
 
 class HBox : public Detail::Box {
 public:

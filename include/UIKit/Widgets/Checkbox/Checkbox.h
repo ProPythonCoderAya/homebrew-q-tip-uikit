@@ -4,9 +4,9 @@
 
 #ifndef QTIPUIKIT_CHECKBOX_H
 #define QTIPUIKIT_CHECKBOX_H
-#include <UIObject.h>
+#include "UIKit/UIObject.h"
 
-#include "Internal/Helpers.h"
+#include "UIKit/Internal/Helpers.h"
 
 struct CheckboxStyle {
     QTip::Color color;

@@ -15,26 +15,26 @@ find_package(SDL3 REQUIRED)
 include(GNUInstallDirs)
 
 add_library(QTipUIKit STATIC
-        include/UIObject.h
-        include/Widgets/Textbox/Textbox.h
+        include/UIKit/UIObject.h
+        include/UIKit/Widgets/Textbox/Textbox.h
         src/Widgets/Textbox/Textbox.cpp
-        include/UIKit.h
+        include/UIKit/UIKit.h
         src/UIKit.cpp
         src/Widgets/Button/Button.cpp
-        include/Widgets/Button/Button.h
-        include/Internal/Helpers.h
-        include/UIKitMod.h
-        include/Widgets/Checkbox/Checkbox.h
+        include/UIKit/Widgets/Button/Button.h
+        include/UIKit/Internal/Helpers.h
+        include/UIKit/UIKitMod.h
+        include/UIKit/Widgets/Checkbox/Checkbox.h
         src/Widgets/Checkbox/Checkbox.cpp
         src/Widgets/Label/Label.cpp
-        include/Widgets/Label/Label.h
+        include/UIKit/Widgets/Label/Label.h
         src/Layout/Panel.cpp
-        include/Layout/Panel.h
+        include/UIKit/Layout/Panel.h
         src/Internal/Helpers.cpp
-        include/Layout/HBox.h
+        include/UIKit/Layout/HBox.h
         src/Internal/Box.cpp
-        include/Internal/Box.h
-        include/Layout/VBox.h
+        include/UIKit/Internal/Box.h
+        include/UIKit/Layout/VBox.h
 )
 
 add_library(QTipUIKit::QTipUIKit ALIAS QTipUIKit)
@@ -93,7 +93,7 @@ install(
 
 install(
     DIRECTORY include/
-    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/Q-Tip/Mods/UIKit
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
 
 install(

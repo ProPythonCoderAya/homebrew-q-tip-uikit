@@ -2,7 +2,7 @@
 // Created by Ayaan on 2026-09-11.
 //
 
-#include "Widgets/Checkbox/Checkbox.h"
+#include "UIKit/Widgets/Checkbox/Checkbox.h"
 
 #include <SDL3/SDL_events.h>
 
