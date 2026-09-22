@@ -128,4 +128,9 @@ private:
 
 } // namespace Detail
 
+typedef Detail::Box::Direction   Direction;
+typedef Detail::Box::Sizing      Sizing;
+typedef Detail::Box::CrossSizing CrossSizing;
+typedef Detail::Box::Settings    Settings;
+
 #endif // QTIPUIKIT_BOX_H

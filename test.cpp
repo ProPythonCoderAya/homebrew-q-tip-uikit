@@ -19,7 +19,8 @@ int main() {
 
     auto& hbox = panel.add<HBox>(Rect{20, 500, 760, 60});
     hbox.setSpacing(10);
-    hbox.setSizing(Detail::Box::Sizing::Stretch);
+    hbox.setSizing(Sizing::Stretch);
+    hbox.setCrossSizing(CrossSizing::Stretch);
 
     Point windowSize = window.size();
     panel.resize(windowSize - Point{20, 20});
@@ -55,7 +56,7 @@ int main() {
     auto& checkbox = hbox.add<Checkbox>(Rect{240, 520, 20, 20}, checkboxStyle);
     checkbox.checked = true;
 
-    auto& checkboxLabel = hbox.add<Label>("Button Enabled", Color::white, Point{270, 520}, font);
+    auto& checkboxLabel = hbox.add<Label>("Button Enabled", Color::white, Point{270, 520}, font, true);
 
     button.setOnClick([&] {
         textbox.setText("Button clicked!");
