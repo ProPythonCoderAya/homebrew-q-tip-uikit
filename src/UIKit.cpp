@@ -6,11 +6,11 @@ UIKitMod::UIKitMod() = default;
 UIKitMod::~UIKitMod() = default;
 
 std::string_view UIKitMod::id() const {
-    return "propythoncoderaya/uikit";
+    return ID;
 }
 
 std::string_view UIKitMod::name() const {
-    return "QTipUIKit";
+    return NAME;
 }
 
 void UIKitMod::init() {

@@ -12,6 +12,9 @@ class UIObject;
 
 class UIKitMod : public QTip::Mod {
 public:
+    static constexpr std::string_view ID = "propythoncoderaya/uikit";
+    static constexpr std::string_view NAME = "UIKit";
+
     UIKitMod();
 
     ~UIKitMod() override;

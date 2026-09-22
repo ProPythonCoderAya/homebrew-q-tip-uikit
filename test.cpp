@@ -56,7 +56,7 @@ int main() {
     auto& checkbox = hbox.add<Checkbox>(Rect{240, 520, 20, 20}, checkboxStyle);
     checkbox.checked = true;
 
-    auto& checkboxLabel = hbox.add<Label>("Button Enabled", Color::white, Point{270, 520}, font, true);
+    auto& checkboxLabel = hbox.add<Label>("Button Enabled", Color::white, Point{270, 520}, font);
 
     button.setOnClick([&] {
         textbox.setText("Button clicked!");
