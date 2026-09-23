@@ -19,8 +19,8 @@ class Textbox : public UIObject {
 MODDABLE_DERIVED(Textbox, UIObject)
 
 public:
-    Textbox(float x, float y, float width, float height, const std::optional<QTip::Font>& font);
-    Textbox(QTip::Rect rect, const std::optional<QTip::Font>& font);
+    Textbox(float x, float y, float width, float height, const std::optional<QTip::Font>& font = std::nullopt);
+    Textbox(QTip::Rect rect, const std::optional<QTip::Font>& font = std::nullopt);
 
     void render(QTip::Window& window) override;
 

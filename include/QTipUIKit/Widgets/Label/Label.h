@@ -10,7 +10,7 @@ class Label : public UIObject {
 MODDABLE_DERIVED(Label, UIObject)
 
 public:
-    Label(const std::string& text, QTip::Color color, QTip::Point position, const std::optional<QTip::Font>& font, bool centered = false);
+    Label(const std::string& text, QTip::Color color, QTip::Point position, const std::optional<QTip::Font>& font = std::nullopt, bool centered = false);
 
     void render(QTip::Window& window) override;
 
