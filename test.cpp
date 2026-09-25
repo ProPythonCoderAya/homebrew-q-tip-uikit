@@ -64,7 +64,7 @@ int main() {
     });
 
     while (!window.shouldClose()) {
-        window.pollEvents();
+        QTRuntime.pollEvents();
 
         if (window.input().keyWasPressed(Key::Key_ESCAPE))
             checkbox.checked = true;
