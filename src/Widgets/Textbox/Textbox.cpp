@@ -36,6 +36,7 @@ Textbox::Textbox(
     _fontHeight = _font.getFontHeight();
 
     _rect = {x, y, width, height};
+    _preferredRect = _rect;
 
     setMinHeight();
 }
@@ -54,6 +55,7 @@ Textbox::Textbox(
     _fontHeight = _font.getFontHeight();
 
     _rect = rect;
+    _preferredRect = _rect;
 
     setMinHeight();
 }
@@ -639,11 +641,10 @@ const Rect& Textbox::rect() {
 // ============================================================
 
 void Textbox::setMinHeight() {
-    _rect.size.y =
-        std::max(
-            _fontHeight + 10.0f,
-            _rect.size.y
-        );
+    if (_rect.size.y < _fontHeight + 10.0f) {
+        _rect.size.y = _fontHeight + 10.0f;
+        _preferredRect.size.y = _rect.size.y;
+    }
 }
 
 

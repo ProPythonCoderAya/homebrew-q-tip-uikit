@@ -207,6 +207,12 @@ void Box::layout() {
         return;
     }
 
+    if (computingLayout) {
+        return;
+    }
+
+    computingLayout = true;
+
     const float availableMain = availableMainSize();
     const float availableCross = availableCrossSize();
 
@@ -324,6 +330,16 @@ void Box::layout() {
             offset += _settings.spacing;
         }
     }
+
+    if (auto* p = dynamic_cast<Box*>(parent)) {
+        p->layout();
+    }
+
+    computingLayout = false;
+}
+
+void Box::onAddObject(UIObject*) {
+    layout();
 }
 
 float Box::mainAxis(QTip::Point point) const {

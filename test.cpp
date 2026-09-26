@@ -8,30 +8,26 @@ int main() {
 
     Window window("QTipUIKit Test", 800, 600);
 
-    Panel panel({10, 10, 780, 580});
-
     Font font("/System/Library/Fonts/SFNSMono.ttf", 20);
 
-    auto& textbox = panel.add<Textbox>(
-        Rect{20, 20, 760, 460},
+    VBox vbox{{10, 10, 780, 580}};
+    vbox.setSpacing(10);
+    vbox.setSizing(Sizing::Stretch);
+    vbox.setCrossSizing(CrossSizing::Stretch);
+
+    auto& textbox = vbox.add<Textbox>(
+        Rect{20, 20, 740, 250},
         font
     );
 
-    auto& hbox = panel.add<HBox>(Rect{20, 500, 760, 60});
+    auto& hbox = vbox.add<HBox>(Rect{20, 500, 760, 60});
     hbox.setSpacing(10);
     hbox.setSizing(Sizing::Stretch);
     hbox.setCrossSizing(CrossSizing::Stretch);
 
     Point windowSize = window.size();
-    panel.resize(windowSize - Point{20, 20});
-    Point size = panel.rect().size;
 
-    textbox.resize({
-        size.x - 40,
-        460
-    });
-
-    hbox.resize({size.x - 20, hbox.rect().size.y});
+    vbox.layout();
 
     ButtonStyle buttonStyle;
     buttonStyle.font = font;
@@ -64,22 +60,16 @@ int main() {
     });
 
     while (!window.shouldClose()) {
-        QTRuntime.pollEvents();
+        QTipRuntime::pollEvents();
 
         if (window.input().keyWasPressed(Key::Key_ESCAPE))
             checkbox.checked = true;
 
         if (window.size() != windowSize) {
             windowSize = window.size();
-            panel.resize(windowSize - Point{20, 20});
-            size = panel.rect().size;
+            Point size = windowSize - Point{20, 20};
 
-            textbox.resize({
-                size.x - 40,
-                460
-            });
-
-            hbox.resize({size.x - 20, hbox.rect().size.y});
+            vbox.resize(size);
         }
 
         button.setDisabled(!checkbox.checked); // disable if NOT checked
@@ -92,7 +82,7 @@ int main() {
         window->setRenderColor(Color::black);
         window->clear();
 
-        panel.render(window);
+        vbox.render(window);
 
         window->present();
     }

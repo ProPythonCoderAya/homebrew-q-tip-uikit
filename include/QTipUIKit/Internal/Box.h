@@ -43,17 +43,6 @@ public:
 
     ~Box() override = default;
 
-    template<std::derived_from<UIObject> T, typename... Args>
-    T& add(Args&&... args) {
-        T& object = Panel::add<T>(
-            std::forward<Args>(args)...
-        );
-
-        layout();
-
-        return object;
-    }
-
     void remove(UIObject& object) override;
 
     void clear() override;
@@ -98,8 +87,13 @@ public:
     [[nodiscard]] float paddingRight() const;
     [[nodiscard]] float paddingBottom() const;
 
-protected:
     void layout();
+
+protected:
+
+    void onAddObject(UIObject* object) override;
+
+    bool computingLayout = false;
 
 private:
     [[nodiscard]] float mainAxis(QTip::Point point) const;

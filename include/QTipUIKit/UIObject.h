@@ -34,6 +34,8 @@ public:
     virtual void setRect(QTip::Rect rect) = 0;
     [[nodiscard]] virtual const QTip::Rect& rect() = 0;
 
+    UIObject* parent = nullptr;
+
 protected:
     QTip::Rect _rect{};
     QTip::Rect _preferredRect{};

@@ -18,6 +18,9 @@ void Panel::render(QTip::Window& window) {
 
     window->setTarget(target);
 
+    //window->setRenderColor(QTip::Color::white);
+    //window->renderRect({0, 0, _rect.size});
+
     for (const auto& object : _objects) {
         object->render(window);
     }

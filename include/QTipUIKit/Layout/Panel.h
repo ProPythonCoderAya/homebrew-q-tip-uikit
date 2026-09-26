@@ -24,10 +24,14 @@ public:
         );
         UIKitMod::instance()->_addingChildren = false;
 
-        T& result = *object;
+        T* result = object.get();
         _objects.push_back(std::move(object));
 
-        return result;
+        result->parent = this;
+
+        onAddObject(result);
+
+        return *result;
     }
 
     virtual void remove(UIObject& object);
@@ -45,6 +49,8 @@ public:
 protected:
     QTip::Rect _rect{};
     std::vector<std::unique_ptr<UIObject>> _objects;
+
+    virtual void onAddObject(UIObject* object) {}
 };
 
 #endif //QTIPUIKIT_PANEL_H
