@@ -8,7 +8,7 @@ int main() {
 
     Window window("QTipUIKit Test", 800, 600);
 
-    Font font("/System/Library/Fonts/SFNSMono.ttf", 20);
+    Font font(Detail::defaultFontPath(), 20);
 
     VBox vbox{{10, 10, 780, 580}};
     vbox.setSpacing(10);
