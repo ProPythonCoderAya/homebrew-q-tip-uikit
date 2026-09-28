@@ -8,6 +8,7 @@
 #include <Q-Tip/Graphics/RenderTarget.h>
 
 #include "QTipUIKit/Containers/Panel.h"
+#include "QTipUIKit/Widgets/ScrollBar/ScrollBar.h"
 
 enum class ScrollDirection {
     Horizontal,
@@ -29,6 +30,8 @@ public:
         ScrollViewSettings settings = {}
     );
 
+    ~ScrollView();
+
     void scrollTo(QTip::Point position);
     void scrollBy(QTip::Point delta);
 
@@ -46,12 +49,27 @@ public:
     void render(QTip::Window& window) override;
     void handleEvent(const SDL_Event& event) override;
 
+    void resize(QTip::Point size) override;
+    void reposition(QTip::Point position) override;
+    void setRect(QTip::Rect rect) override;
+    const QTip::Rect& rect() override;
+
 private:
     void clampScrollPosition();
+
+    void updateScrollBars();
+
+    void updateScrollBarsDimensions();
+
+    bool x() const;
+    bool y() const;
 
     ScrollViewSettings _settings;
     QTip::Point _scrollPosition{};
     QTip::Point _contentSize{};
+
+    ScrollBar* _horizontalScrollBar = nullptr;
+    ScrollBar* _verticalScrollBar = nullptr;
 };
 
 

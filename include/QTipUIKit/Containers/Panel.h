@@ -51,6 +51,7 @@ protected:
     std::vector<std::unique_ptr<UIObject>> _objects;
 
     virtual void onAddObject(UIObject* object);
+    static void setAddingChildren(bool addingChildren);
 };
 
 #endif //QTIPUIKIT_PANEL_H

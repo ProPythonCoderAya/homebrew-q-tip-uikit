@@ -7,7 +7,7 @@ using namespace QTip;
 int main() {
     ModLoader::load<UIKitMod>();
 
-    Window window("QTipUIKit Test", 1920, 1080);
+    Window window("QTipUIKit Test", 800, 600);
 
     Font font(Detail::defaultFontPath(), 20);
 

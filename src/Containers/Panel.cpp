@@ -113,3 +113,7 @@ void Panel::onAddObject(UIObject*) {
         _preferredRect.size = minimumSize();
     }
 }
+
+void Panel::setAddingChildren(bool addingChildren) {
+    UIKitMod::instance()->_addingChildren = addingChildren;
+}

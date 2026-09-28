@@ -1,0 +1,285 @@
+//
+// Created by Ayaan on 2026-09-28.
+//
+
+#include "QTipUIKit/Widgets/ScrollBar/ScrollBar.h"
+
+#include <algorithm>
+#include <SDL3/SDL_events.h>
+
+namespace {
+
+constexpr float ScrollbarThickness = 10.0f;
+constexpr float MinimumThumbLength = 20.0f;
+
+}
+
+ScrollBar::ScrollBar(
+    const QTip::Rect rect,
+    const ScrollBarOrientation orientation
+)
+    : _orientation(orientation) {
+    _rect = rect;
+    _preferredRect = rect;
+}
+
+void ScrollBar::setPosition(const float position) {
+    _position = std::clamp(position, 0.0f, 1.0f);
+}
+
+float ScrollBar::position() const {
+    return _position;
+}
+
+void ScrollBar::setViewRatio(const float ratio) {
+    _viewRatio = std::clamp(ratio, 0.0f, 1.0f);
+}
+
+float ScrollBar::viewRatio() const {
+    return _viewRatio;
+}
+
+QTip::Rect ScrollBar::thumbRect() const {
+    const float length = thumbLength();
+    const float travel = std::max(
+        0.0f,
+        trackLength() - length
+    );
+
+    const float offset = _position * travel;
+
+    if (_orientation == ScrollBarOrientation::Horizontal) {
+        return {
+            _rect.origin.x + offset,
+            _rect.origin.y,
+            length,
+            ScrollbarThickness
+        };
+    }
+
+    return {
+        _rect.origin.x,
+        _rect.origin.y + offset,
+        ScrollbarThickness,
+        length
+    };
+}
+
+float ScrollBar::trackStart() const {
+    if (_orientation == ScrollBarOrientation::Horizontal) {
+        return _rect.origin.x;
+    }
+
+    return _rect.origin.y;
+}
+
+float ScrollBar::trackLength() const {
+    if (_orientation == ScrollBarOrientation::Horizontal) {
+        return _rect.size.x;
+    }
+
+    return _rect.size.y;
+}
+
+float ScrollBar::thumbLength() const {
+    return std::clamp(
+        trackLength() * _viewRatio,
+        MinimumThumbLength,
+        trackLength()
+    );
+}
+
+void ScrollBar::render(QTip::Window& window) {
+    const float trackLengthValue = trackLength();
+    const float thumbLengthValue = thumbLength();
+
+    if (trackLengthValue <= 0.0f) {
+        return;
+    }
+
+    const QTip::Point center = _rect.center();
+
+    window->setRenderColor(QTip::Color{
+        64,
+        64,
+        64,
+        255
+    });
+
+    if (_orientation == ScrollBarOrientation::Horizontal) {
+        window->renderThickLine(
+            QTip::Line{
+                {
+                    _rect.origin.x,
+                    center.y
+                },
+                {
+                    _rect.origin.x + _rect.size.x,
+                    center.y
+                }
+            },
+            ScrollbarThickness,
+            true
+        );
+    } else {
+        window->renderThickLine(
+            QTip::Line{
+                {
+                    center.x,
+                    _rect.origin.y
+                },
+                {
+                    center.x,
+                    _rect.origin.y + _rect.size.y
+                }
+            },
+            ScrollbarThickness,
+            true
+        );
+    }
+
+    const QTip::Rect thumb = thumbRect();
+
+    window->setRenderColor(QTip::Color{
+        127,
+        127,
+        127,
+        255
+    });
+
+    if (_orientation == ScrollBarOrientation::Horizontal) {
+        window->renderThickLine(
+            QTip::Line{
+                {
+                    thumb.origin.x,
+                    center.y
+                },
+                {
+                    thumb.origin.x + thumb.size.x,
+                    center.y
+                }
+            },
+            ScrollbarThickness,
+            true
+        );
+    } else {
+        window->renderThickLine(
+            QTip::Line{
+                {
+                    center.x,
+                    thumb.origin.y
+                },
+                {
+                    center.x,
+                    thumb.origin.y + thumb.size.y
+                }
+            },
+            ScrollbarThickness,
+            true
+        );
+    }
+}
+
+void ScrollBar::handleEvent(const SDL_Event& event) {
+    switch (event.type) {
+        case SDL_EVENT_MOUSE_BUTTON_DOWN: {
+            const QTip::Point mouse{
+                event.button.x,
+                event.button.y
+            };
+
+            const QTip::Rect thumb = thumbRect();
+
+            if (!thumb.isPointInside(mouse)) {
+                break;
+            }
+
+            _dragging = true;
+
+            if (_orientation == ScrollBarOrientation::Horizontal) {
+                _dragOffset = mouse.x - thumb.origin.x;
+            } else {
+                _dragOffset = mouse.y - thumb.origin.y;
+            }
+
+            break;
+        }
+
+        case SDL_EVENT_MOUSE_MOTION: {
+            if (!_dragging) {
+                break;
+            }
+
+            const float length = thumbLength();
+            const float travel = trackLength() - length;
+
+            if (travel <= 0.0f) {
+                _position = 0.0f;
+                break;
+            }
+
+            const float mousePosition =
+                _orientation == ScrollBarOrientation::Horizontal
+                    ? event.motion.x
+                    : event.motion.y;
+
+            float thumbPosition =
+                mousePosition - _dragOffset;
+
+            thumbPosition = std::clamp(
+                thumbPosition,
+                trackStart(),
+                trackStart() + travel
+            );
+
+            _position =
+                (thumbPosition - trackStart()) / travel;
+
+            break;
+        }
+
+        case SDL_EVENT_MOUSE_BUTTON_UP:
+            _dragging = false;
+            _dragOffset = 0.0f;
+            break;
+
+        default:
+            break;
+    }
+}
+
+QTip::Point ScrollBar::minimumSize() const {
+    if (_orientation == ScrollBarOrientation::Horizontal) {
+        return {
+            MinimumThumbLength,
+            ScrollbarThickness
+        };
+    }
+
+    return {
+        ScrollbarThickness,
+        MinimumThumbLength
+    };
+}
+
+QTip::Point ScrollBar::preferredSize() const {
+    return _preferredRect.size;
+}
+
+void ScrollBar::resize(const QTip::Point size) {
+    _rect.size = size;
+    _preferredRect.size = size;
+}
+
+void ScrollBar::reposition(const QTip::Point position) {
+    _rect.origin = position;
+    _preferredRect.origin = position;
+}
+
+void ScrollBar::setRect(const QTip::Rect rect) {
+    _rect = rect;
+}
+
+const QTip::Rect& ScrollBar::rect() {
+    return _rect;
+}

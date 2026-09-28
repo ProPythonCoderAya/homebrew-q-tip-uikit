@@ -37,6 +37,8 @@ add_library(QTipUIKit STATIC
         include/QTipUIKit/Containers/VBox.h
         src/Containers/ScrollView.cpp
         include/QTipUIKit/Containers/ScrollView.h
+        include/QTipUIKit/Widgets/ScrollBar/ScrollBar.cpp
+        include/QTipUIKit/Widgets/ScrollBar/ScrollBar.h
 )
 
 add_library(QTipUIKit::QTipUIKit ALIAS QTipUIKit)
