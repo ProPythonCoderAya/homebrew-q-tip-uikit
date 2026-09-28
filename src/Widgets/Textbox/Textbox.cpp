@@ -5,6 +5,7 @@
 #include "QTipUIKit/Widgets/Textbox/Textbox.h"
 
 #include <algorithm>
+#include <iostream>
 
 #include "Q-Tip/Graphics/RenderTarget.h"
 
@@ -28,17 +29,7 @@ Textbox::Textbox(
     const std::optional<Font>& font
 ) : _font(Detail::defaultFontPath(), 16) {
 
-    if (font.has_value()) {
-        _font.destroy();
-        _font = font.value();
-    }
-
-    _fontHeight = _font.getFontHeight();
-
-    _rect = {x, y, width, height};
-    _preferredRect = _rect;
-
-    setMinHeight();
+    init({x, y, width, height}, font);
 }
 
 
@@ -47,6 +38,10 @@ Textbox::Textbox(
     const std::optional<Font>& font
 ) : _font(Detail::defaultFontPath(), 16) {
 
+    init(rect, font);
+}
+
+void Textbox::init(Rect rect, const std::optional<Font>& font) {
     if (font.has_value()) {
         _font.destroy();
         _font = font.value();
@@ -57,7 +52,17 @@ Textbox::Textbox(
     _rect = rect;
     _preferredRect = _rect;
 
+    _textCursor = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_TEXT);
+    if (!_textCursor)
+        UIKitMod::instance()->log(fmt("Failed to create text cursor: %s", SDL_GetError()), LOG_WARNING);
+
     setMinHeight();
+}
+
+Textbox::~Textbox() {
+    if (_textCursor) {
+        SDL_DestroyCursor(_textCursor);
+    }
 }
 
 
@@ -306,6 +311,18 @@ void Textbox::handleEvent(const SDL_Event& event) {
     }
 
 
+    case SDL_EVENT_MOUSE_MOTION: {
+        if (_rect.isPointInside({event.motion.x, event.motion.y})) {
+            if (_textCursor)
+                SDL_SetCursor(_textCursor);
+        } else {
+            SDL_SetCursor(SDL_GetDefaultCursor());
+        }
+
+        break;
+    }
+
+
     // --------------------------------------------------------
     // Keyboard
     // --------------------------------------------------------
@@ -507,7 +524,7 @@ bool Textbox::getActive() const {
 // Text input
 // ============================================================
 
-void Textbox::type(std::string text) {
+void Textbox::type(const std::string_view text) {
     if (text.empty())
         return;
 

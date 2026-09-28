@@ -2,7 +2,7 @@
 // Created by Ayaan on 2026-09-12.
 //
 
-#include "QTipUIKit/Layout/Panel.h"
+#include "QTipUIKit/Containers/Panel.h"
 
 #include <Q-Tip/Graphics/RenderTarget.h>
 #include <SDL3/SDL_events.h>
@@ -11,6 +11,7 @@
 
 Panel::Panel(const QTip::Rect rect) {
     _rect = rect;
+    _preferredRect = rect;
 }
 
 void Panel::render(QTip::Window& window) {
@@ -81,15 +82,17 @@ QTip::Point Panel::minimumSize() const {
 }
 
 QTip::Point Panel::preferredSize() const {
-    return _rect.size;
+    return _preferredRect.size;
 }
 
 void Panel::resize(QTip::Point size) {
     _rect.size = size;
+    _preferredRect.size = size;
 }
 
 void Panel::reposition(QTip::Point position) {
     _rect.origin = position;
+    _preferredRect.origin = position;
 }
 
 void Panel::setRect(QTip::Rect rect) {
@@ -98,4 +101,15 @@ void Panel::setRect(QTip::Rect rect) {
 
 const QTip::Rect& Panel::rect() {
     return _rect;
+}
+
+static bool operator<=>(const QTip::Point& lhs, const QTip::Point& rhs) {
+    return lhs.x < rhs.x && lhs.y < rhs.y;
+}
+
+void Panel::onAddObject(UIObject*) {
+    if (minimumSize() > _rect.size) {
+        _rect.size = minimumSize();
+        _preferredRect.size = minimumSize();
+    }
 }

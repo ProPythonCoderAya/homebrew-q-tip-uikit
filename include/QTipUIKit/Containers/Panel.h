@@ -50,7 +50,7 @@ protected:
     QTip::Rect _rect{};
     std::vector<std::unique_ptr<UIObject>> _objects;
 
-    virtual void onAddObject(UIObject* object) {}
+    virtual void onAddObject(UIObject* object);
 };
 
 #endif //QTIPUIKIT_PANEL_H

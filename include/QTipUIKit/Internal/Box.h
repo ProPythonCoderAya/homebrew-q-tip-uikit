@@ -5,7 +5,7 @@
 #ifndef QTIPUIKIT_BOX_H
 #define QTIPUIKIT_BOX_H
 
-#include "QTipUIKit/Layout/Panel.h"
+#include "QTipUIKit/Containers/Panel.h"
 
 namespace Detail {
 

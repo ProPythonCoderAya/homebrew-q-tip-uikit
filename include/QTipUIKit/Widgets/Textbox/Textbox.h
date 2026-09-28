@@ -15,12 +15,16 @@
 #include <Q-Tip/Graphics/Shapes/Rect.h>
 #include <Q-Tip/Window/Window.h>
 
+struct SDL_Cursor;
+
 class Textbox : public UIObject {
 MODDABLE_DERIVED(Textbox, UIObject)
 
 public:
     Textbox(float x, float y, float width, float height, const std::optional<QTip::Font>& font = std::nullopt);
     Textbox(QTip::Rect rect, const std::optional<QTip::Font>& font = std::nullopt);
+
+    ~Textbox() override;
 
     void render(QTip::Window& window) override;
 
@@ -29,7 +33,7 @@ public:
     void setActive(bool active);
     [[nodiscard]] bool getActive() const;
 
-    void type(std::string text);
+    void type(std::string_view text);
 
     [[nodiscard]] std::string getText() const;
     void setText(const std::string& text);
@@ -43,6 +47,8 @@ public:
     const QTip::Rect& rect() override;
 
 private:
+    void init(QTip::Rect rect, const std::optional<QTip::Font>& font = std::nullopt);
+
     QTip::Rect _rect{};
     QTip::Font _font;
 
@@ -61,6 +67,8 @@ private:
     std::string _text;
 
     QTip::Point _scroll = {0, 0};
+
+    SDL_Cursor* _textCursor = nullptr;
 
     void setMinHeight();
 

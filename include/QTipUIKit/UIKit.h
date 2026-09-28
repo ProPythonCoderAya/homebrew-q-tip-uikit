@@ -12,8 +12,8 @@
 #include "QTipUIKit/Widgets/Label/Label.h"
 #include "QTipUIKit/UIObject.h"
 
-#include "QTipUIKit/Layout/Panel.h"
-#include "QTipUIKit/Layout/HBox.h"
-#include "QTipUIKit/Layout/VBox.h"
+#include "QTipUIKit/Containers/Panel.h"
+#include "QTipUIKit/Containers/HBox.h"
+#include "QTipUIKit/Containers/VBox.h"
 
 #endif //QTIPUIKIT_UIKIT_H

@@ -1,16 +1,23 @@
 #include <Q-Tip/QTip.h>
-#include "QTipUIKit//UIKit.h"
+#include "QTipUIKit/UIKit.h"
+#include "QTipUIKit/Containers/ScrollView.h"
 
 using namespace QTip;
 
 int main() {
     ModLoader::load<UIKitMod>();
 
-    Window window("QTipUIKit Test", 800, 600);
+    Window window("QTipUIKit Test", 1920, 1080);
 
     Font font(Detail::defaultFontPath(), 20);
 
-    VBox vbox{{10, 10, 780, 580}};
+    ScrollViewSettings settings;
+    settings.direction = ScrollDirection::Both;
+
+    ScrollView view({0, 0, 800, 600}, settings);
+    view.setContentSize({1920, 1080});
+
+    auto& vbox = view.add<VBox>(Rect{10, 10, 1900, 1060});
     vbox.setSpacing(10);
     vbox.setSizing(Sizing::Stretch);
     vbox.setCrossSizing(CrossSizing::Stretch);
@@ -26,6 +33,7 @@ int main() {
     hbox.setCrossSizing(CrossSizing::Stretch);
 
     Point windowSize = window.size();
+    view.resize(windowSize);
 
     vbox.layout();
 
@@ -67,9 +75,8 @@ int main() {
 
         if (window.size() != windowSize) {
             windowSize = window.size();
-            Point size = windowSize - Point{20, 20};
 
-            vbox.resize(size);
+            view.resize(windowSize);
         }
 
         button.setDisabled(!checkbox.checked); // disable if NOT checked
@@ -82,7 +89,7 @@ int main() {
         window->setRenderColor(Color::black);
         window->clear();
 
-        vbox.render(window);
+        view.render(window);
 
         window->present();
     }

@@ -28,13 +28,15 @@ add_library(QTipUIKit STATIC
         src/Widgets/Checkbox/Checkbox.cpp
         src/Widgets/Label/Label.cpp
         include/QTipUIKit/Widgets/Label/Label.h
-        src/Layout/Panel.cpp
-        include/QTipUIKit/Layout/Panel.h
+        src/Containers/Panel.cpp
+        include/QTipUIKit/Containers/Panel.h
         src/Internal/Helpers.cpp
-        include/QTipUIKit/Layout/HBox.h
+        include/QTipUIKit/Containers/HBox.h
         src/Internal/Box.cpp
         include/QTipUIKit/Internal/Box.h
-        include/QTipUIKit/Layout/VBox.h
+        include/QTipUIKit/Containers/VBox.h
+        src/Containers/ScrollView.cpp
+        include/QTipUIKit/Containers/ScrollView.h
 )
 
 add_library(QTipUIKit::QTipUIKit ALIAS QTipUIKit)
