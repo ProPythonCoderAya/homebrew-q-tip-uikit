@@ -36,6 +36,7 @@ private:
     bool _addingChildren = false;
 
     void add(UIObject* object);
+    void remove(UIObject* object);
 
     friend class UIObject;
     friend class Panel;

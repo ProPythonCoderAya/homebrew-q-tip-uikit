@@ -12,3 +12,11 @@ repository="."
 
 commit_message = "Update UIKit to {version}"
 push = true
+
+[cmake]
+enabled = true
+
+update_cmake_project_version = true
+cmake_project_name = "QTipUIKit"
+
+cmake_lists_directory = "."

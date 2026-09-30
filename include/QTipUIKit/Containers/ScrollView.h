@@ -47,7 +47,7 @@ public:
     const ScrollViewSettings& settings() const;
 
     void render(QTip::Window& window) override;
-    void handleEvent(const SDL_Event& event) override;
+    bool handleEvent(const SDL_Event& event) override;
 
     void resize(QTip::Point size) override;
     void reposition(QTip::Point position) override;

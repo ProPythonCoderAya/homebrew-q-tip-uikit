@@ -206,7 +206,7 @@ void Textbox::render(Window& window) {
 // Event handling
 // ============================================================
 
-void Textbox::handleEvent(const SDL_Event& event) {
+bool Textbox::handleEvent(const SDL_Event& event) {
     switch (event.type) {
 
     // --------------------------------------------------------
@@ -244,6 +244,7 @@ void Textbox::handleEvent(const SDL_Event& event) {
                 getCurrentColumn();
 
             _blinkTimer = SDL_GetTicks();
+            return false;
         } else {
             _active = false;
         }
@@ -307,7 +308,7 @@ void Textbox::handleEvent(const SDL_Event& event) {
             maxScroll.y
         );
 
-        break;
+        return false;
     }
 
 
@@ -315,6 +316,7 @@ void Textbox::handleEvent(const SDL_Event& event) {
         if (_rect.isPointInside({event.motion.x, event.motion.y})) {
             if (_textCursor)
                 SDL_SetCursor(_textCursor);
+            return false;
         } else {
             SDL_SetCursor(SDL_GetDefaultCursor());
         }
@@ -499,6 +501,11 @@ void Textbox::handleEvent(const SDL_Event& event) {
     default:
         break;
     }
+    auto position = Detail::eventPosition(event);
+    if (position != QTip::Point{-1, -1}) {
+        return !_rect.isPointInside(position);
+    }
+    return true;
 }
 
 

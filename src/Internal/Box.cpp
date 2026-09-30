@@ -19,8 +19,8 @@ void Box::render(QTip::Window& window) {
     Panel::render(window);
 }
 
-void Box::handleEvent(const SDL_Event& event) {
-    Panel::handleEvent(event);
+bool Box::handleEvent(const SDL_Event& event) {
+    return Panel::handleEvent(event);
 }
 
 void Box::remove(UIObject& object) {

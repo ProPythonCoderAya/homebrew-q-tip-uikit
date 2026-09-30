@@ -29,7 +29,7 @@ public:
     Checkbox(float x, float y, float width, float height, const CheckboxStyle& style);
     Checkbox(QTip::Rect rect, const CheckboxStyle& style);
 
-    void handleEvent(const SDL_Event& event) override;
+    bool handleEvent(const SDL_Event& event) override;
 
     void render(QTip::Window& window) override;
 

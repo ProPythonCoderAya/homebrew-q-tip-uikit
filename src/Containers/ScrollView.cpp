@@ -202,12 +202,12 @@ void ScrollView::render(QTip::Window& window) {
         _verticalScrollBar->render(window);
 }
 
-void ScrollView::handleEvent(const SDL_Event& event) {
+bool ScrollView::handleEvent(const SDL_Event& event) {
     SDL_Event localEvent =
         Detail::transformEvent(event, _rect.origin);
 
-    _horizontalScrollBar->handleEvent(localEvent);
-    _verticalScrollBar->handleEvent(localEvent);
+    bool x = !_horizontalScrollBar->handleEvent(localEvent);
+    bool y = !_verticalScrollBar->handleEvent(localEvent);
 
     const float maxX =
         std::max(0.0f, _contentSize.x - rect().size.x);
@@ -218,11 +218,18 @@ void ScrollView::handleEvent(const SDL_Event& event) {
     _scrollPosition.x = _horizontalScrollBar->position() * maxX;
     _scrollPosition.y = _verticalScrollBar->position() * maxY;
 
+    if (x || y)
+        return false;
+
     localEvent =
         Detail::transformEvent(event, _rect.origin - _scrollPosition);
 
-    for (const auto& object : _objects) {
-        object->handleEvent(localEvent);
+    bool propagate = true;
+    for (const auto& object : _sortedObjects()) {
+        if (!object->handleEvent(localEvent)) {
+            propagate = false;
+            break;
+        }
     }
 
     if (event.type == SDL_EVENT_MOUSE_WHEEL) {
@@ -246,6 +253,7 @@ void ScrollView::handleEvent(const SDL_Event& event) {
 
         scrollBy(delta);
     }
+    return propagate;
 }
 
 void ScrollView::resize(QTip::Point size) {

@@ -3,6 +3,8 @@
 //
 
 #include "QTipUIKit/Internal/Helpers.h"
+
+#include <iostream>
 #include <SDL3/SDL_events.h>
 
 namespace Detail {
@@ -62,5 +64,68 @@ namespace Detail {
         }
 
         return transformed;
+    }
+
+    QTip::Point eventPosition(const SDL_Event& event) {
+        switch (event.type) {
+        case SDL_EVENT_MOUSE_MOTION:
+            return {event.motion.x, event.motion.y};
+
+        case SDL_EVENT_MOUSE_BUTTON_DOWN:
+        case SDL_EVENT_MOUSE_BUTTON_UP:
+            return {event.button.x, event.button.y};
+
+        case SDL_EVENT_MOUSE_WHEEL:
+            return {event.wheel.mouse_x, event.wheel.mouse_y};
+
+        default:
+            return {-1, -1};
+        }
+    }
+
+    void printMouseEvent(const SDL_Event& event) {
+        switch (event.type) {
+        case SDL_EVENT_MOUSE_MOTION:
+            std::cout
+                << "MOUSE_MOTION"
+                << " window=" << event.motion.windowID
+                << " position=(" << event.motion.x << ", " << event.motion.y << ")"
+                << " delta=(" << event.motion.xrel << ", " << event.motion.yrel << ")"
+                << " buttons=" << event.motion.state
+                << '\n';
+            break;
+
+        case SDL_EVENT_MOUSE_BUTTON_DOWN:
+            std::cout
+                << "MOUSE_BUTTON_DOWN"
+                << " window=" << event.button.windowID
+                << " position=(" << event.button.x << ", " << event.button.y << ")"
+                << " button=" << static_cast<int>(event.button.button)
+                << " clicks=" << static_cast<int>(event.button.clicks)
+                << '\n';
+            break;
+
+        case SDL_EVENT_MOUSE_BUTTON_UP:
+            std::cout
+                << "MOUSE_BUTTON_UP"
+                << " window=" << event.button.windowID
+                << " position=(" << event.button.x << ", " << event.button.y << ")"
+                << " button=" << static_cast<int>(event.button.button)
+                << " clicks=" << static_cast<int>(event.button.clicks)
+                << '\n';
+            break;
+
+        case SDL_EVENT_MOUSE_WHEEL:
+            std::cout
+                << "MOUSE_WHEEL"
+                << " window=" << event.wheel.windowID
+                << " position=(" << event.wheel.mouse_x << ", " << event.wheel.mouse_y << ")"
+                << " scroll=(" << event.wheel.x << ", " << event.wheel.y << ")"
+                << '\n';
+            break;
+
+        default:
+            break;
+        }
     }
 }

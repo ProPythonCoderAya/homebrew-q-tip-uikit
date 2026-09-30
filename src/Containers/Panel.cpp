@@ -31,13 +31,16 @@ void Panel::render(QTip::Window& window) {
     window->renderTexture(target, QTip::Rect::zero, _rect);
 }
 
-void Panel::handleEvent(const SDL_Event& event) {
+bool Panel::handleEvent(const SDL_Event& event) {
     const SDL_Event localEvent =
         Detail::transformEvent(event, _rect.origin);
 
-    for (const auto& object : _objects) {
-        object->handleEvent(localEvent);
+    for (const auto& object : _sortedObjects()) {
+        if (!object->handleEvent(localEvent)) {
+            return false;
+        }
     }
+    return true;
 }
 
 void Panel::resize(const QTip::Rect rect) {
@@ -105,6 +108,18 @@ const QTip::Rect& Panel::rect() {
 
 static bool operator<=>(const QTip::Point& lhs, const QTip::Point& rhs) {
     return lhs.x < rhs.x && lhs.y < rhs.y;
+}
+
+std::vector<UIObject*> Panel::_sortedObjects() const {
+    std::vector<UIObject*> sortedObjects;
+    for (const auto& object : _objects)
+        sortedObjects.push_back(object.get());
+    std::ranges::sort(sortedObjects,
+                      [](const UIObject* a, const UIObject* b) {
+                          return a->zIndex() < b->zIndex();
+                      }
+    );
+    return sortedObjects;
 }
 
 void Panel::onAddObject(UIObject*) {

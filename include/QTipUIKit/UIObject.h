@@ -21,10 +21,19 @@ public:
         UIKitMod::instance()->add(this);
     }
 
-    virtual ~UIObject() = default;
+    virtual ~UIObject() {
+        UIKitMod::instance()->remove(this);
+    }
+
+    int zIndex() const {return _z;}
+    void setZIndex(const int z) {
+        _z = z;
+        if (parent)
+            parent->_zVersion++;
+    }
 
     virtual void render(QTip::Window& window) = 0;
-    virtual void handleEvent(const SDL_Event& event) {}
+    virtual bool handleEvent(const SDL_Event& event) {return true;}
 
     [[nodiscard]] virtual QTip::Point minimumSize() const = 0;
     [[nodiscard]] virtual QTip::Point preferredSize() const = 0;
@@ -42,6 +51,10 @@ protected:
     static SDL_Window* window(QTip::Window& window) {
         return window;
     }
+    int _z;
+
+    // Mostly only for panels, just helps with sorting
+    int _zVersion = 0;
 };
 
 #endif //QTIP_UIOBJECT_H

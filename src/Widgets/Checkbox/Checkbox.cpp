@@ -18,10 +18,14 @@ Checkbox::Checkbox(QTip::Rect rect, const CheckboxStyle& style) {
     checked = false;
 }
 
-void Checkbox::handleEvent(const SDL_Event& event) {
+bool Checkbox::handleEvent(const SDL_Event& event) {
     if (_disabled) {
         _state = CheckboxState::Disabled;
-        return;
+        auto position = Detail::eventPosition(event);
+        if (position != QTip::Point{-1, -1}) {
+            return !_rect.isPointInside(position);
+        }
+        return true;
     }
     switch (event.type) {
     default:
@@ -60,6 +64,11 @@ void Checkbox::handleEvent(const SDL_Event& event) {
         }
         break;
     }
+    auto position = Detail::eventPosition(event);
+    if (position != QTip::Point{-1, -1}) {
+        return !_rect.isPointInside(position);
+    }
+    return true;
 }
 
 void Checkbox::render(QTip::Window& window) {

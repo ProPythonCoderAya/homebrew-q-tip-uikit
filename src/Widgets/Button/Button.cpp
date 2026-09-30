@@ -22,10 +22,14 @@ Button::Button(QTip::Rect rect, std::string_view text, const ButtonStyle& style)
     _text = std::string(text);
 }
 
-void Button::handleEvent(const SDL_Event& event) {
+bool Button::handleEvent(const SDL_Event& event) {
     if (_disabled) {
         _state = ButtonState::Disabled;
-        return;
+        auto position = Detail::eventPosition(event);
+        if (position != QTip::Point{-1, -1}) {
+            return !_rect.isPointInside(position);
+        }
+        return true;
     }
     switch (event.type) {
     default:
@@ -50,20 +54,24 @@ void Button::handleEvent(const SDL_Event& event) {
                 _state = ButtonState::Normal;
         }
         break;
-    case SDL_EVENT_MOUSE_MOTION:
+    case SDL_EVENT_MOUSE_MOTION: {
         if (_rect.isPointInside({
             event.motion.x,
             event.motion.y
         })) {
             if (_state != ButtonState::Pressed)
                 _state = ButtonState::Hovered;
-        }
-        else {
+        } else
             if (_state != ButtonState::Pressed)
                 _state = ButtonState::Normal;
-        }
         break;
     }
+    }
+    auto position = Detail::eventPosition(event);
+    if (position != QTip::Point{-1, -1}) {
+        return !_rect.isPointInside(position);
+    }
+    return true;
 }
 
 void Button::render(QTip::Window& window) {

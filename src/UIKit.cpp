@@ -1,5 +1,6 @@
 #include "QTipUIKit/UIKitMod.h"
 #include "QTipUIKit/UIObject.h"
+#include "QTipUIKit/Internal/Helpers.h"
 
 UIKitMod::UIKitMod() = default;
 
@@ -20,8 +21,8 @@ void UIKitMod::shutdown() {
 }
 
 void UIKitMod::handleEvent(const SDL_Event& event) {
-    for (auto* mod : _objects) {
-        mod->handleEvent(event);
+    for (auto* object : _objects) {
+        object->handleEvent(event);
     }
 }
 
@@ -32,4 +33,16 @@ UIKitMod* UIKitMod::instance() {
 void UIKitMod::add(UIObject* object) {
     if (_addingChildren) return;
     _objects.push_back(object);
+}
+
+void UIKitMod::remove(UIObject* object) {
+    const auto it = std::ranges::find_if(_objects,
+         [&object](const UIObject* ptr) {
+             return ptr == object;
+         }
+    );
+
+    if (it != _objects.end()) {
+        _objects.erase(it);
+    }
 }

@@ -28,7 +28,7 @@ public:
     [[nodiscard]] float viewRatio() const;
 
     void render(QTip::Window& window) override;
-    void handleEvent(const SDL_Event& event) override;
+    bool handleEvent(const SDL_Event& event) override;
 
     [[nodiscard]] QTip::Point minimumSize() const override;
     [[nodiscard]] QTip::Point preferredSize() const override;

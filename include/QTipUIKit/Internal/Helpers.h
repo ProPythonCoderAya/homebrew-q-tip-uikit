@@ -6,6 +6,7 @@
 #define QTIPUIKIT_HELPERS_H
 #include <filesystem>
 #include <Q-Tip/Math/Point.h>
+#include <SDL3/SDL_events.h>
 namespace fs = std::filesystem;
 
 union SDL_Event;
@@ -24,6 +25,10 @@ namespace Detail {
     }
 
     SDL_Event transformEvent(const SDL_Event& event, const QTip::Point& position);
+
+    QTip::Point eventPosition(const SDL_Event& event);
+
+    void printMouseEvent(const SDL_Event& event);
 }
 
 #endif //QTIPUIKIT_HELPERS_H

@@ -4,6 +4,8 @@
 
 #ifndef QTIPUIKIT_PANEL_H
 #define QTIPUIKIT_PANEL_H
+#include <Q-Tip/Types/Lazy.h>
+
 #include "QTipUIKit/UIObject.h"
 
 class Panel : public UIObject {
@@ -11,7 +13,7 @@ public:
     Panel(QTip::Rect rect);
 
     void render(QTip::Window& window) override;
-    void handleEvent(const SDL_Event& event) override;
+    bool handleEvent(const SDL_Event& event) override;
 
     void resize(QTip::Rect rect);
     [[nodiscard]] const QTip::Rect& rect() const;
@@ -49,6 +51,8 @@ public:
 protected:
     QTip::Rect _rect{};
     std::vector<std::unique_ptr<UIObject>> _objects;
+
+    std::vector<UIObject*> _sortedObjects() const;
 
     virtual void onAddObject(UIObject* object);
     static void setAddingChildren(bool addingChildren);

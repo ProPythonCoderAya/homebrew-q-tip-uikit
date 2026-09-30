@@ -7,6 +7,8 @@
 #include <algorithm>
 #include <SDL3/SDL_events.h>
 
+#include "QTipUIKit/Internal/Helpers.h"
+
 namespace {
 
 constexpr float ScrollbarThickness = 10.0f;
@@ -180,7 +182,7 @@ void ScrollBar::render(QTip::Window& window) {
     }
 }
 
-void ScrollBar::handleEvent(const SDL_Event& event) {
+bool ScrollBar::handleEvent(const SDL_Event& event) {
     switch (event.type) {
         case SDL_EVENT_MOUSE_BUTTON_DOWN: {
             const QTip::Point mouse{
@@ -188,7 +190,9 @@ void ScrollBar::handleEvent(const SDL_Event& event) {
                 event.button.y
             };
 
-            const QTip::Rect thumb = thumbRect();
+            QTip::Rect thumb = thumbRect();
+            thumb.origin -= QTip::Point{5, 5};
+            thumb.size += QTip::Point{10, 10};
 
             if (!thumb.isPointInside(mouse)) {
                 break;
@@ -202,7 +206,7 @@ void ScrollBar::handleEvent(const SDL_Event& event) {
                 _dragOffset = mouse.y - thumb.origin.y;
             }
 
-            break;
+            return false;
         }
 
         case SDL_EVENT_MOUSE_MOTION: {
@@ -234,18 +238,31 @@ void ScrollBar::handleEvent(const SDL_Event& event) {
 
             _position =
                 (thumbPosition - trackStart()) / travel;
-
-            break;
+            auto position = Detail::eventPosition(event);
+            if (position != QTip::Point{-1, -1}) {
+                return !_rect.isPointInside(position);
+            }
+            return true;
         }
 
-        case SDL_EVENT_MOUSE_BUTTON_UP:
+        case SDL_EVENT_MOUSE_BUTTON_UP: {
             _dragging = false;
             _dragOffset = 0.0f;
-            break;
+            auto position = Detail::eventPosition(event);
+            if (position != QTip::Point{-1, -1}) {
+                return !_rect.isPointInside(position);
+            }
+            return true;
+        }
 
         default:
             break;
     }
+    auto position = Detail::eventPosition(event);
+    if (position != QTip::Point{-1, -1}) {
+        return !_rect.isPointInside(position);
+    }
+    return true;
 }
 
 QTip::Point ScrollBar::minimumSize() const {

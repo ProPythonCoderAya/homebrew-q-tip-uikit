@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 4.0)
 
 project(QTipUIKit
-    VERSION 0.0.0
+    VERSION 0.0.1
     LANGUAGES CXX
 )
 
@@ -37,7 +37,7 @@ add_library(QTipUIKit STATIC
         include/QTipUIKit/Containers/VBox.h
         src/Containers/ScrollView.cpp
         include/QTipUIKit/Containers/ScrollView.h
-        include/QTipUIKit/Widgets/ScrollBar/ScrollBar.cpp
+        src/Widgets/ScrollBar/ScrollBar.cpp
         include/QTipUIKit/Widgets/ScrollBar/ScrollBar.h
 )
 
@@ -84,6 +84,15 @@ add_executable(QTipUIKitTest
 )
 
 target_link_libraries(QTipUIKitTest PUBLIC
+    QTipUIKit::QTipUIKit
+)
+
+add_executable(QTipUIKitTest2
+    test2.cpp
+        test2.cpp
+)
+
+target_link_libraries(QTipUIKitTest2 PUBLIC
     QTipUIKit::QTipUIKit
 )
 

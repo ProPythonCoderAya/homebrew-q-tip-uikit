@@ -28,7 +28,7 @@ public:
 
     void render(QTip::Window& window) override;
 
-    void handleEvent(const SDL_Event& event) override;
+    bool handleEvent(const SDL_Event& event) override;
 
     void setActive(bool active);
     [[nodiscard]] bool getActive() const;
