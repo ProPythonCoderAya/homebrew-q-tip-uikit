@@ -1,9 +1,9 @@
 class QTipUikit < Formula
   desc "A mod for Q-Tip that provides UI"
   homepage "https://github.com/ProPythonCoderAya/homebrew-q-tip-uikit"
-  url "https://github.com/ProPythonCoderAya/homebrew-q-tip-uikit/archive/refs/tags/v0.0.0.tar.gz"
+  url "https://github.com/ProPythonCoderAya/homebrew-q-tip-uikit/archive/refs/tags/v0.0.1.tar.gz"
   head "https://github.com/ProPythonCoderAya/homebrew-q-tip-uikit.git", branch: "main"
-  sha256 "7fd16478f499677b58c075e4f7cfbf157dfc577defbd577fad8894e7f22ee5e7"
+  sha256 "e7f3f0f231716277b76a3fbaff2020c040df4721e96e022b05da6dcead84fd45"
   license "MIT"
 
   depends_on "cmake"
