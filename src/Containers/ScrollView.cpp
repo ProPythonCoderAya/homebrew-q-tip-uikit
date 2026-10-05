@@ -11,10 +11,20 @@
 #include "QTipUIKit/Internal/Helpers.h"
 
 bool overlap(const QTip::Rect& rect1, const QTip::Rect& rect2) {
-    return !(rect1.origin.x + rect1.size.x <= rect2.origin.x ||
-             rect1.origin.x >= rect2.origin.x + rect2.size.x ||
-             rect1.origin.y + rect1.size.y <= rect2.origin.y ||
-             rect1.origin.y >= rect2.origin.y + rect2.size.y);
+    const float left1   = rect1.origin.x;
+    const float right1  = rect1.origin.x + rect1.size.x;
+    const float top1    = rect1.origin.y;
+    const float bottom1 = rect1.origin.y + rect1.size.y;
+
+    const float left2   = rect2.origin.x;
+    const float right2  = rect2.origin.x + rect2.size.x;
+    const float top2    = rect2.origin.y;
+    const float bottom2 = rect2.origin.y + rect2.size.y;
+
+    return left1 <= right2 &&
+           right1 >= left2 &&
+           top1 <= bottom2 &&
+           bottom1 >= top2;
 }
 
 ScrollView::ScrollView(
@@ -149,8 +159,8 @@ void ScrollView::updateScrollBarsDimensions() {
     else
         _verticalScrollBar->resize({20.0f, rect().size.y - 20.0f});
 
-    _horizontalScrollBar->reposition({15.0f, rect().size.y - 15.0f});
-    _verticalScrollBar->reposition({rect().size.x - 15.0f, 15.0f});
+    _horizontalScrollBar->reposition({rect().origin.x + 15.0f, rect().origin.y + rect().size.y - 15.0f});
+    _verticalScrollBar->reposition({rect().origin.x + rect().size.x - 15.0f, rect().origin.y + 15.0f});
 }
 
 bool ScrollView::x() const {
@@ -172,12 +182,13 @@ void ScrollView::render(QTip::Window& window) {
     for (const auto& child : _objects) {
         const QTip::Rect childRect = child->rect();
 
-        if (!overlap(childRect, {
+        bool overlapping = overlap(childRect, {
             0,
             0,
             _contentSize.x,
             _contentSize.y
-        }))
+        });
+        if (!overlapping)
             continue;
 
         child->render(window);
@@ -196,18 +207,22 @@ void ScrollView::render(QTip::Window& window) {
         rect()
     );
 
-    if (x() && _contentSize.x > rect().size.x)
+    if (x() && _contentSize.x > rect().size.x && _settings.showScrollbar)
         _horizontalScrollBar->render(window);
-    if (y() && _contentSize.y > rect().size.y)
+    if (y() && _contentSize.y > rect().size.y && _settings.showScrollbar)
         _verticalScrollBar->render(window);
 }
 
 bool ScrollView::handleEvent(const SDL_Event& event) {
+    auto position = Detail::eventPosition(event);
+    if (position != QTip::Point{-1, -1} && !rect().isPointInside(position))
+        return true;
+
     SDL_Event localEvent =
         Detail::transformEvent(event, _rect.origin);
 
-    bool x = !_horizontalScrollBar->handleEvent(localEvent);
-    bool y = !_verticalScrollBar->handleEvent(localEvent);
+    bool x = !_horizontalScrollBar->handleEvent(event);
+    bool y = !_verticalScrollBar->handleEvent(event);
 
     const float maxX =
         std::max(0.0f, _contentSize.x - rect().size.x);
@@ -264,6 +279,8 @@ void ScrollView::resize(QTip::Point size) {
 
 void ScrollView::reposition(QTip::Point position) {
     Panel::reposition(position);
+    updateScrollBars();
+    updateScrollBarsDimensions();
 }
 
 void ScrollView::setRect(QTip::Rect rect) {

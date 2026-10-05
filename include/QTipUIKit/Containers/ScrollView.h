@@ -20,7 +20,6 @@ struct ScrollViewSettings {
     ScrollDirection direction = ScrollDirection::Vertical;
     float scrollSpeed = 30.0f;
     bool showScrollbar = true;
-    bool scrollbarAutoHide = true;
 };
 
 class ScrollView : public Panel {

@@ -33,6 +33,7 @@ public:
     }
 
     virtual void render(QTip::Window& window) = 0;
+    // returns true to continue propagating, false if consumed
     virtual bool handleEvent(const SDL_Event& event) {return true;}
 
     [[nodiscard]] virtual QTip::Point minimumSize() const = 0;
@@ -55,6 +56,10 @@ protected:
 
     // Mostly only for panels, just helps with sorting
     int _zVersion = 0;
+
+    struct NoRegTag {};
+
+    explicit UIObject(NoRegTag) : _z(0) {}
 };
 
 #endif //QTIP_UIOBJECT_H

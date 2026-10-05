@@ -1,0 +1,110 @@
+//
+// Created by Ayaan on 2026-09-30.
+//
+
+#include "QTipUIKit/Dialogs/Dialog.h"
+
+#include <SDL3/SDL_events.h>
+
+Dialog::Dialog() : UIObject(NoRegTag{}), _content({}), _buttons({}), _lastWindowSize() { // dont reg in global
+    _buttons.setSizing(Sizing::Stretch);
+}
+
+Dialog::~Dialog() {
+    // here we should call end(), but I won't.
+}
+
+void Dialog::render(QTip::Window& window) {
+    layout();
+
+    window->setRenderColor({0, 0, 0, 128});
+    window->renderRect({0, 0, window.size()});
+
+    window->setRenderColor({64, 64, 64, 255});
+
+    QTip::Rect rect = {window.size() / 8.0f, window.size() / 1.33f};
+
+    window->renderRoundedRect(rect, 10);
+
+    window->setRenderColor(QTip::Color::white);
+
+    _content.render(window);
+    _buttons.render(window);
+}
+
+bool Dialog::handleEvent(const SDL_Event& event) {
+    _content.handleEvent(event);
+    _buttons.handleEvent(event);
+
+    if (_requestedClose)
+        end();
+    return false;
+}
+
+QTip::Point Dialog::minimumSize() const { return {}; }
+
+QTip::Point Dialog::preferredSize() const { return {}; }
+
+void Dialog::resize(QTip::Point size) {}
+void Dialog::reposition(QTip::Point position) {}
+void Dialog::setRect(QTip::Rect rect) {}
+const QTip::Rect& Dialog::rect() { return _rect; }
+
+Panel& Dialog::content() {
+    return _content;
+}
+
+HBox& Dialog::buttons() {
+    return _buttons;
+}
+
+void Dialog::close() {
+    _requestedClose = true;
+}
+
+Dialog& Dialog::create(QTip::Window& window) {
+    auto dialog = std::unique_ptr<Dialog>(new Dialog());
+
+    dialog->initialize(window);
+
+    auto& manager = *UIKitMod::instance();
+
+    manager._dialogs.emplace_back(
+        &window,
+        std::move(dialog)
+    );
+
+    return *manager._dialogs.back().second;
+}
+
+void Dialog::initialize(QTip::Window& window) {
+    _window = &window;
+    layout();
+}
+
+void Dialog::end() {
+    auto& manager = *UIKitMod::instance();
+
+    auto it = std::ranges::find_if(manager._dialogs.begin(), manager._dialogs.end(), [&](const auto& dialog) {
+        return dialog.second.get() == this;
+    });
+
+    if (it != manager._dialogs.end()) {
+        manager._dialogs.erase(it);
+    }
+}
+
+void Dialog::layout() {
+    QTip::Point windowSize = _window->size();
+    if (windowSize == _lastWindowSize)
+        return;
+    _lastWindowSize = windowSize;
+
+    QTip::Rect rect = {windowSize / 8.0f, windowSize / 1.33f};
+
+    QTip::Rect contentRect = {rect.origin.x + 10, rect.origin.y + 10, rect.size.x - 20, rect.size.y - 80};
+    _content.setRect(contentRect);
+
+    QTip::Rect buttonRect = {rect.origin.x + 10, rect.origin.y + 10 + rect.size.y - 70, rect.size.x - 20, 50};
+    _buttons.setRect(buttonRect);
+}

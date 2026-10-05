@@ -1,8 +1,57 @@
 #include <Q-Tip/QTip.h>
 #include "QTipUIKit/UIKit.h"
 #include "QTipUIKit/Containers/ScrollView.h"
+#include "QTipUIKit/Dialogs/Dialog.h"
+#include "QTipUIKit/Widgets/Dropdown/Dropdown.h"
 
 using namespace QTip;
+
+namespace {
+    enum class [[maybe_unused]] Fruit {
+        Apple,
+        Apricot,
+        Avocado,
+        Banana,
+        Blackberry,
+        Blueberry,
+        Cantaloupe,
+        Cherry,
+        Coconut,
+        Cranberry,
+        Date,
+        Dragonfruit,
+        Durian,
+        Fig,
+        Gooseberry,
+        Grape,
+        Grapefruit,
+        Guava,
+        Jackfruit,
+        Kiwi,
+        Lemon,
+        Lime,
+        Lychee,
+        Mango,
+        Mangosteen,
+        Melon,
+        Mulberry,
+        Nectarine,
+        Orange,
+        Papaya,
+        Passionfruit,
+        Peach,
+        Pear,
+        Persimmon,
+        Pineapple,
+        Plum,
+        Pomegranate,
+        Raspberry,
+        Starfruit,
+        Strawberry,
+        Tangerine,
+        Watermelon
+    };
+}
 
 int main() {
     ModLoader::load<UIKitMod>();
@@ -62,9 +111,40 @@ int main() {
 
     auto& checkboxLabel = hbox.add<Label>("Button Enabled", Color::white, Point{270, 520}, font);
 
+    auto& dialogButton = hbox.add<Button>(
+        Rect{20, 580, 200, 60},
+        "Click me",
+        buttonStyle
+    );
+
     button.setOnClick([&] {
         textbox.setText("Button clicked!");
         checkbox.checked = false;
+    });
+
+    dialogButton.setOnClick([&] {
+        auto& dialog = Dialog::create(window);
+
+        auto& buttons = dialog.buttons();
+        auto& content = dialog.content();
+
+        auto& contentVBox = content.add<VBox>(Rect{0, 0, content.rect().size});
+
+        contentVBox.add<Label>("Quit?", Color::white, Point{0, 0}, font);
+
+        auto& dropdown = contentVBox.add<Dropdown<Fruit>>(Rect{0, 0, 100, 25});
+
+        auto& cancelButton = buttons.add<Button>(Rect{0, 0, 100, buttons.rect().size.y}, "Cancel", buttonStyle);
+        auto& yesButton = buttons.add<Button>(Rect{0, 0, 100, buttons.rect().size.y}, "Yes", buttonStyle);
+
+        yesButton.setOnClick([&] {
+            dialog.close();
+            window.requestClose();
+        });
+
+        cancelButton.setOnClick([&] {
+            dialog.close();
+        });
     });
 
     while (!window.shouldClose()) {

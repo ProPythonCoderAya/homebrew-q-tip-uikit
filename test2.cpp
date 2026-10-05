@@ -4,6 +4,8 @@
 
 #include <Q-Tip/QTip.h>
 #include <QTipUIKit/UIKit.h>
+
+#include "QTipUIKit/Containers/List.h"
 using namespace QTip;
 
 int main() {
@@ -20,6 +22,13 @@ int main() {
     {
         Button button(0, 0, 100, 100, "hello", style);
 
+        List list({100, 100, 100, 100}, List::Direction::Down, 5.0f);
+        list.add<Label>("label1", Color::white, Point{0, 0});
+        list.add<Label>("label2", Color::white, Point{0, 0});
+        list.add<Label>("label3", Color::white, Point{0, 0});
+        list.add<Label>("label4", Color::white, Point{0, 0});
+        list.add<Label>("label5", Color::white, Point{0, 0});
+
         bool shouldClose = false;
 
         button.setOnClick([&shouldClose] {
@@ -33,6 +42,7 @@ int main() {
             window->clear();
 
             button.render(window);
+            list.render(window);
 
             window->present();
         }

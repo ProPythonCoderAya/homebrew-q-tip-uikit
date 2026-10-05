@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 4.0)
 
 project(QTipUIKit
-    VERSION 0.0.1
+    VERSION 0.0.2
     LANGUAGES CXX
 )
 
@@ -11,6 +11,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 find_package(QTip REQUIRED)
 find_package(SDL3 REQUIRED)
+find_package(magic_enum REQUIRED)
 
 include(GNUInstallDirs)
 
@@ -39,6 +40,12 @@ add_library(QTipUIKit STATIC
         include/QTipUIKit/Containers/ScrollView.h
         src/Widgets/ScrollBar/ScrollBar.cpp
         include/QTipUIKit/Widgets/ScrollBar/ScrollBar.h
+        src/Dialogs/Dialog.cpp
+        include/QTipUIKit/Dialogs/Dialog.h
+        include/QTipUIKit/Widgets/Dropdown/Dropdown.h
+        include/QTipUIKit/Widgets/Dropdown/Dropdown.tpp
+        src/Containers/List.cpp
+        include/QTipUIKit/Containers/List.h
 )
 
 add_library(QTipUIKit::QTipUIKit ALIAS QTipUIKit)
@@ -56,6 +63,7 @@ target_link_libraries(QTipUIKit
         QTip::QTip
     PRIVATE
         SDL3::SDL3
+        magic_enum::magic_enum
 )
 
 include(CMakePackageConfigHelpers)

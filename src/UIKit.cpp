@@ -1,6 +1,9 @@
+#include <ranges>
+
 #include "QTipUIKit/UIKitMod.h"
 #include "QTipUIKit/UIObject.h"
 #include "QTipUIKit/Internal/Helpers.h"
+#include "QTipUIKit/Dialogs/Dialog.h"
 
 UIKitMod::UIKitMod() = default;
 
@@ -18,11 +21,31 @@ void UIKitMod::init() {
 }
 
 void UIKitMod::shutdown() {
+    for (const auto& dialog : _dialogs | std::views::values) {
+        dialog->end();
+    }
 }
 
 void UIKitMod::handleEvent(const SDL_Event& event) {
+    if (!_dialogs.empty()) {
+        _dialogs.back().second->handleEvent(event);
+        return;
+    }
     for (auto* object : _objects) {
+        if (!object) {
+            std::cerr << "UIKit: NULL object in _objects!\n";
+            continue;
+        }
+
         object->handleEvent(event);
+    }
+}
+
+void UIKitMod::beforePresent(QTip::Window& window) {
+    for (auto& [w, dialog] : _dialogs) {
+        if (w == &window) {
+            dialog->render(window);
+        }
     }
 }
 

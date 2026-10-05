@@ -7,6 +7,7 @@ class QTipUikit < Formula
   license "MIT"
 
   depends_on "cmake"
+  depends_on "magic_enum"
   depends_on "propythoncoderaya/q-tip/q-tip"
 
   def install

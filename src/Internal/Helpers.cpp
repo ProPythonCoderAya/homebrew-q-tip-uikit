@@ -72,7 +72,6 @@ namespace Detail {
             return {event.motion.x, event.motion.y};
 
         case SDL_EVENT_MOUSE_BUTTON_DOWN:
-        case SDL_EVENT_MOUSE_BUTTON_UP:
             return {event.button.x, event.button.y};
 
         case SDL_EVENT_MOUSE_WHEEL:

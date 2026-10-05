@@ -1,0 +1,48 @@
+//
+// Created by Ayaan on 2026-10-03.
+//
+
+#ifndef QTIPUIKIT_LIST_H
+#define QTIPUIKIT_LIST_H
+
+#include "QTipUIKit/Containers/Panel.h"
+
+class List : public Panel {
+public:
+    enum class Direction {
+        Up,
+        Down,
+        Left,
+        Right
+    };
+
+    explicit List(
+        QTip::Rect rect,
+        Direction direction = Direction::Down,
+        float spacing = 5.0f
+    );
+
+    ~List() override = default;
+
+    void render(QTip::Window& window) override;
+    bool handleEvent(const SDL_Event& event) override;
+
+    void setDirection(Direction direction);
+    Direction direction() const;
+
+    void setSpacing(float spacing);
+    float spacing() const;
+
+protected:
+    void onAddObject(UIObject* object) override;
+
+private:
+    Direction _direction;
+    float _spacing = 0.0f;
+
+    void layout();
+    void resizeToFitChildren();
+    void updateLayout();
+};
+
+#endif // QTIPUIKIT_LIST_H

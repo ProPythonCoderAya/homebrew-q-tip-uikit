@@ -9,6 +9,7 @@
 #include <vector>
 
 class UIObject;
+class Dialog;
 
 class UIKitMod : public QTip::Mod {
 public:
@@ -29,9 +30,12 @@ public:
 
     void handleEvent(const SDL_Event& event) override;
 
+    void beforePresent(QTip::Window& window) override;
+
     static UIKitMod* instance();
 private:
     std::vector<UIObject*> _objects;
+    std::vector<std::pair<QTip::Window*, std::unique_ptr<Dialog>>> _dialogs;
 
     bool _addingChildren = false;
 
@@ -40,6 +44,7 @@ private:
 
     friend class UIObject;
     friend class Panel;
+    friend class Dialog;
 };
 
 #endif //QTIPUIKIT_UIKITMOD_H
