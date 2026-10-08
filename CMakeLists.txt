@@ -63,9 +63,9 @@ target_include_directories(QTipUIKit
 target_link_libraries(QTipUIKit
     PUBLIC
         QTip::QTip
+        magic_enum::magic_enum
     PRIVATE
         SDL3::SDL3
-        magic_enum::magic_enum
 )
 
 include(CMakePackageConfigHelpers)
