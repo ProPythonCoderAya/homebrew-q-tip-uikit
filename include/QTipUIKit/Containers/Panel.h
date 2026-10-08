@@ -48,6 +48,8 @@ public:
     void setRect(QTip::Rect rect) override;
     [[nodiscard]] const QTip::Rect& rect() override;
 
+    void tick(QTip::Clock& clock, double dt) override;
+
 protected:
     QTip::Rect _rect{};
     std::vector<std::unique_ptr<UIObject>> _objects;

@@ -196,15 +196,21 @@ void ScrollView::render(QTip::Window& window) {
 
     window->resetTarget();
 
+    QTip::Point size = rect().size;
+
+    size.x = std::min(size.x, _contentSize.x);
+    size.y = std::min(size.y, _contentSize.y);
+
     window->renderTexture(
         target,
         QTip::Rect{
-            _scrollPosition.x,
-            _scrollPosition.y,
-            rect().size.x,
-            rect().size.y
+            .origin = _scrollPosition,
+            .size = size
         },
-        rect()
+        QTip::Rect{
+            .origin = rect().origin,
+            .size = size
+        }
     );
 
     if (x() && _contentSize.x > rect().size.x && _settings.showScrollbar)

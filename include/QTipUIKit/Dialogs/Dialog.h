@@ -11,6 +11,8 @@
 
 class Dialog : public UIObject {
 public:
+    using ResizeHandler = std::function<void(QTip::Point size)>;
+
     ~Dialog() override;
 
     void render(QTip::Window& window) override;
@@ -23,6 +25,11 @@ public:
     void reposition(QTip::Point position) override;
     void setRect(QTip::Rect rect) override;
     [[nodiscard]] const QTip::Rect& rect() override;
+
+    void setContentResizeHandler(ResizeHandler handler);
+    void setButtonsResizeHandler(ResizeHandler handler);
+
+    void tick(QTip::Clock& clock, double dt) override;
 
     Panel& content();
     HBox& buttons();
@@ -49,6 +56,9 @@ private:
     bool _requestedClose = false;
 
     QTip::Point _lastWindowSize;
+
+    ResizeHandler _content_resize_handler;
+    ResizeHandler _buttons_resize_handler;
 
     friend class UIKitMod;
 };

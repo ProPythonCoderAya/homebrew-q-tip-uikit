@@ -29,7 +29,7 @@ public:
         ScrollViewSettings settings = {}
     );
 
-    ~ScrollView();
+    ~ScrollView() override;
 
     void scrollTo(QTip::Point position);
     void scrollBy(QTip::Point delta);

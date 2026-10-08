@@ -50,6 +50,19 @@ void Dialog::reposition(QTip::Point position) {}
 void Dialog::setRect(QTip::Rect rect) {}
 const QTip::Rect& Dialog::rect() { return _rect; }
 
+void Dialog::setContentResizeHandler(ResizeHandler handler) {
+    _content_resize_handler = handler;
+}
+
+void Dialog::setButtonsResizeHandler(ResizeHandler handler) {
+    _buttons_resize_handler = handler;
+}
+
+void Dialog::tick(QTip::Clock& clock, double dt) {
+    _content.tick(clock, dt);
+    _buttons.tick(clock, dt);
+}
+
 Panel& Dialog::content() {
     return _content;
 }
@@ -107,4 +120,10 @@ void Dialog::layout() {
 
     QTip::Rect buttonRect = {rect.origin.x + 10, rect.origin.y + 10 + rect.size.y - 70, rect.size.x - 20, 50};
     _buttons.setRect(buttonRect);
+
+    if (_content_resize_handler)
+        _content_resize_handler(contentRect.size);
+
+    if (_buttons_resize_handler)
+        _buttons_resize_handler(buttonRect.size);
 }

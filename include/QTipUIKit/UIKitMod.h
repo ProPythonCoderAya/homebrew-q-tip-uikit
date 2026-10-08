@@ -5,6 +5,7 @@
 #ifndef QTIPUIKIT_UIKITMOD_H
 #define QTIPUIKIT_UIKITMOD_H
 #include <Q-Tip/Mods/Mod.h>
+#include <Q-Tip/Clock.h>
 
 #include <vector>
 
@@ -38,6 +39,8 @@ private:
     std::vector<std::pair<QTip::Window*, std::unique_ptr<Dialog>>> _dialogs;
 
     bool _addingChildren = false;
+
+    QTip::Clock clock;
 
     void add(UIObject* object);
     void remove(UIObject* object);

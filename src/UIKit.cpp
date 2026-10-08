@@ -42,9 +42,15 @@ void UIKitMod::handleEvent(const SDL_Event& event) {
 }
 
 void UIKitMod::beforePresent(QTip::Window& window) {
+    double dt = clock.elapsedFromLastCall() / 1000.0;
+    for (auto object : _objects) {
+        object->tick(clock, dt);
+    }
+
     for (auto& [w, dialog] : _dialogs) {
         if (w == &window) {
             dialog->render(window);
+            dialog->tick(clock, dt);
         }
     }
 }

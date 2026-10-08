@@ -5,6 +5,7 @@
 #ifndef QTIP_UIOBJECT_H
 #define QTIP_UIOBJECT_H
 
+#include <Q-Tip/Clock.h>
 #include <Q-Tip/Window/Window.h>
 #include <Q-Tip/Mods/ModLoader/ModLoader.h>
 
@@ -45,6 +46,8 @@ public:
     [[nodiscard]] virtual const QTip::Rect& rect() = 0;
 
     UIObject* parent = nullptr;
+
+    virtual void tick(QTip::Clock& clock, double dt) {}
 
 protected:
     QTip::Rect _rect{};

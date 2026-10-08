@@ -106,8 +106,9 @@ const QTip::Rect& Panel::rect() {
     return _rect;
 }
 
-static bool operator<=>(const QTip::Point& lhs, const QTip::Point& rhs) {
-    return lhs.x < rhs.x && lhs.y < rhs.y;
+void Panel::tick(QTip::Clock& clock, double dt) {
+    for (auto& object : _objects)
+        object->tick(clock, dt);
 }
 
 std::vector<UIObject*> Panel::_sortedObjects() const {

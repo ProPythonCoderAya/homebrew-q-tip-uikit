@@ -46,6 +46,8 @@ add_library(QTipUIKit STATIC
         include/QTipUIKit/Widgets/Dropdown/Dropdown.tpp
         src/Containers/List.cpp
         include/QTipUIKit/Containers/List.h
+        include/QTipUIKit/Widgets/PieChart/PieChart.h
+        include/QTipUIKit/Widgets/PieChart/PieChart.tpp
 )
 
 add_library(QTipUIKit::QTipUIKit ALIAS QTipUIKit)

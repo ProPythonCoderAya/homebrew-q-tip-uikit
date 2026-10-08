@@ -127,4 +127,13 @@ namespace Detail {
             break;
         }
     }
+
+    SDL_FColor toFColor(QTip::Color color) {
+        return SDL_FColor {
+            static_cast<float>(color.r) / 255.0f,
+            static_cast<float>(color.g) / 255.0f,
+            static_cast<float>(color.b) / 255.0f,
+            static_cast<float>(color.a) / 255.0f
+        };
+    }
 }

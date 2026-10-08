@@ -14,6 +14,7 @@
 #include <sstream>
 #include <cstring>
 #include <algorithm>
+#include <Q-Tip/Math/Point.h>
 
 constexpr char PATH_SEPARATOR = '/';
 const std::string ROOT = "/";

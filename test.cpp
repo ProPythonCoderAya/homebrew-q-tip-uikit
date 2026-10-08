@@ -3,6 +3,7 @@
 #include "QTipUIKit/Containers/ScrollView.h"
 #include "QTipUIKit/Dialogs/Dialog.h"
 #include "QTipUIKit/Widgets/Dropdown/Dropdown.h"
+#include "QTipUIKit/Widgets/PieChart/PieChart.h"
 
 using namespace QTip;
 
@@ -113,7 +114,13 @@ int main() {
 
     auto& dialogButton = hbox.add<Button>(
         Rect{20, 580, 200, 60},
-        "Click me",
+        "Dialog",
+        buttonStyle
+    );
+
+    auto& pieChartButton = hbox.add<Button>(
+        Rect{20, 580, 200, 60},
+        "PieChart",
         buttonStyle
     );
 
@@ -132,7 +139,11 @@ int main() {
 
         contentVBox.add<Label>("Quit?", Color::white, Point{0, 0}, font);
 
-        auto& dropdown = contentVBox.add<Dropdown<Fruit>>(Rect{0, 0, 100, 25});
+        contentVBox.add<Dropdown<Fruit>>(Rect{0, 0, 100, 25});
+
+        dialog.setContentResizeHandler([&](Point size) {
+            contentVBox.resize(size);
+        });
 
         auto& cancelButton = buttons.add<Button>(Rect{0, 0, 100, buttons.rect().size.y}, "Cancel", buttonStyle);
         auto& yesButton = buttons.add<Button>(Rect{0, 0, 100, buttons.rect().size.y}, "Yes", buttonStyle);
@@ -143,6 +154,79 @@ int main() {
         });
 
         cancelButton.setOnClick([&] {
+            dialog.close();
+        });
+    });
+
+    pieChartButton.setOnClick([&] {
+        auto& dialog = Dialog::create(window);
+
+        auto& buttons = dialog.buttons();
+        auto& content = dialog.content();
+
+        auto& contentVBox = content.add<VBox>(
+            Rect{0, 0, content.rect().size}
+        );
+
+        contentVBox.setSizing(Sizing::Stretch);
+        contentVBox.setCrossSizing(CrossSizing::Stretch);
+
+        auto& pieChart = contentVBox.add<PieChart<int>>(
+            Rect{0, 0, 100, 100},
+            std::vector{
+                1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+                11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+                21, 22, 23, 24, 25, 26, 27, 28, 29, 30
+            },
+            PieChartFormatters<int>{
+                .value = [](const int& value) {
+                    return value;
+                },
+                .label = [](const int& value) {
+                    return std::to_string(value);
+                }
+            },
+            true
+        );
+
+        dialog.setContentResizeHandler([&](Point size) {
+            contentVBox.resize(size);
+        });
+
+        auto& randomizeButton = buttons.add<Button>(
+            Rect{0, 0, 120, buttons.rect().size.y},
+            "Randomize",
+            buttonStyle
+        );
+
+        randomizeButton.setOnClick([&] {
+            std::vector<int> values;
+            values.reserve(30);
+
+            for (int i = 0; i < 30; ++i) {
+                values.push_back(1 + (std::rand() % 100));
+            }
+
+            pieChart.setData(
+                std::move(values),
+                PieChartFormatters<int>{
+                    .value = [](const int& value) {
+                        return value;
+                    },
+                    .label = [](const int& value) {
+                        return std::to_string(value);
+                    }
+                }
+            );
+        });
+
+        auto& okButton = buttons.add<Button>(
+            Rect{0, 0, 100, buttons.rect().size.y},
+            "Ok",
+            buttonStyle
+        );
+
+        okButton.setOnClick([&] {
             dialog.close();
         });
     });
