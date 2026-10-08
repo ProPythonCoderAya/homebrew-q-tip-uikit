@@ -8,7 +8,7 @@ class QTipUikit < Formula
 
   depends_on "cmake"
   depends_on "magic_enum"
-  depends_on "propythoncoderaya/q-tip/q-tip"
+  depends_on "c-plusplus-dev/q-tip/q-tip"
 
   def install
     system "cmake", "-S", ".", "-B", "build",
