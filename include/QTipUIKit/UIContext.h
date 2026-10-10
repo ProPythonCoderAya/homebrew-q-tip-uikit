@@ -22,6 +22,7 @@ private:
     std::vector<UIObject*> _objects;
     std::vector<std::unique_ptr<Dialog>> _dialogs;
     std::vector<Dialog*> _removalPendingDialogs;
+    std::vector<SDL_Event> _eventPool;
 
     void add(UIObject* object);
     void remove(UIObject* object);
@@ -33,6 +34,8 @@ private:
     void removeDialog(Dialog* dialog);
 
     bool _addingChildren = false;
+
+    bool _firstEventPool = true;
 
     QTip::Window* _window = nullptr;
 

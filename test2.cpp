@@ -11,7 +11,7 @@ using namespace QTip;
 int main() {
     ModLoader::load<UIKitMod>();
 
-    Window window("helloo", 800, 600);
+    Window window("helloo", 2000, 2000);
 
     ButtonStyle style;
     style.color = Color::white;

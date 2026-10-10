@@ -4,8 +4,12 @@
 
 #include "../include/QTipUIKit/UIContext.h"
 
+#include <magic_enum/magic_enum.hpp>
+#include <SDL3/SDL_events.h>
+
 #include "QTipUIKit/UIKitMod.h"
 #include "QTipUIKit/UIObject.h"
+#include "QTipUIKit/Internal/Helpers.h"
 
 UIContext::UIContext() {
     UIKitMod::instance()->_contexts.push_back(this);
@@ -61,9 +65,28 @@ void UIContext::beforePresent(QTip::Window& window, QTip::Clock& clock, double d
         dialog->render(window);
         dialog->tick(clock, dt);
     }
+
+    _firstEventPool = false;
 }
 
 void UIContext::handleEvent(const SDL_Event& event) {
+    if (_firstEventPool) {
+        _eventPool.push_back(event);
+        return;
+    }
+    if (!_eventPool.empty()) {
+        for (auto& e : _eventPool) {
+            if (!_dialogs.empty()) {
+                _dialogs.back()->handleEvent(e);
+                continue;
+            }
+
+            for (const auto object : _objects)
+                object->handleEvent(e);
+        }
+        _eventPool.clear();
+    }
+
     if (!_dialogs.empty()) {
         _dialogs.back()->handleEvent(event);
         return;

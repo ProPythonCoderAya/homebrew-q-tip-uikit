@@ -91,6 +91,8 @@ namespace Detail {
     }
 
     SDL_FColor toFColor(QTip::Color color);
+
+    std::string eventName(const SDL_Event& event);
 }
 
 static bool operator<(const QTip::Point& lhs, const QTip::Point& rhs) {

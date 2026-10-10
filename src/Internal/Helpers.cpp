@@ -5,6 +5,7 @@
 #include "QTipUIKit/Internal/Helpers.h"
 
 #include <iostream>
+#include <magic_enum/magic_enum.hpp>
 #include <SDL3/SDL_events.h>
 
 namespace Detail {
@@ -135,5 +136,11 @@ namespace Detail {
             static_cast<float>(color.b) / 255.0f,
             static_cast<float>(color.a) / 255.0f
         };
+    }
+
+    std::string eventName(const SDL_Event& event) {
+        char buffer[256]{};
+        SDL_GetEventDescription(&event, buffer, sizeof(buffer));
+        return buffer;
     }
 }
