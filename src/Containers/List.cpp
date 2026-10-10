@@ -14,8 +14,8 @@ List::List(QTip::Rect rect, Direction direction, float spacing)
     updateLayout();
 }
 
-void List::render(QTip::Window& window) {
-    Panel::render(window);
+void List::renderImpl(QTip::Window& window) {
+    Panel::renderImpl(window);
 }
 
 bool List::handleEvent(const SDL_Event& event) {

@@ -27,7 +27,6 @@ public:
     void setViewRatio(float ratio);
     [[nodiscard]] float viewRatio() const;
 
-    void render(QTip::Window& window) override;
     bool handleEvent(const SDL_Event& event) override;
 
     [[nodiscard]] QTip::Point minimumSize() const override;
@@ -58,6 +57,9 @@ private:
 
     bool _dragging = false;
     float _dragOffset = 0.0f;
+
+protected:
+    void renderImpl(QTip::Window& window) override;
 };
 
 #endif //QTIPUIKIT_SCROLLBAR_H

@@ -11,6 +11,7 @@
 
 #include <SDL3/SDL.h>
 
+#include "QTipUIKit/UIKitMod.h"
 #include "QTipUIKit/UIObject.h"
 #include "QTipUIKit/Internal/Helpers.h"
 
@@ -70,7 +71,7 @@ Textbox::~Textbox() {
 // Rendering
 // ============================================================
 
-void Textbox::render(Window& window) {
+void Textbox::renderImpl(Window& window) {
     Renderer& renderer = window.getRenderer();
 
     RenderTarget target(renderer, _rect.size);

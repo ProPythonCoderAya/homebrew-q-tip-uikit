@@ -16,7 +16,7 @@ Label::Label(const std::string& text, QTip::Color color, QTip::Point position, c
     _centered = centered;
 }
 
-void Label::render(QTip::Window& window) {
+void Label::renderImpl(QTip::Window& window) {
     if (_centered)
         window->renderTextCentered(_font, _text.c_str(), _position.x, _position.y, _color);
     else

@@ -45,7 +45,6 @@ public:
     [[nodiscard]]
     const ScrollViewSettings& settings() const;
 
-    void render(QTip::Window& window) override;
     bool handleEvent(const SDL_Event& event) override;
 
     void resize(QTip::Point size) override;
@@ -69,6 +68,9 @@ private:
 
     ScrollBar* _horizontalScrollBar = nullptr;
     ScrollBar* _verticalScrollBar = nullptr;
+
+protected:
+    void renderImpl(QTip::Window& window) override;
 };
 
 

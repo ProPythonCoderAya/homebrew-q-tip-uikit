@@ -9,6 +9,8 @@
 
 #include <vector>
 
+#include "UIContext.h"
+
 class UIObject;
 class Dialog;
 
@@ -33,21 +35,26 @@ public:
 
     void beforePresent(QTip::Window& window) override;
 
+    void windowCreated(QTip::Window& window) override;
+    void windowDestroyed(QTip::Window& window) override;
+
     static UIKitMod* instance();
+
 private:
-    std::vector<UIObject*> _objects;
-    std::vector<std::pair<QTip::Window*, std::unique_ptr<Dialog>>> _dialogs;
+    std::vector<UIContext*> _contexts;
 
-    bool _addingChildren = false;
+    UIContext* context(QTip::Window& window);
 
-    QTip::Clock clock;
+    Dialog& addDialog(QTip::Window& window, std::unique_ptr<Dialog> dialog);
+    void removeDialog(QTip::Window& window, Dialog* dialog);
 
-    void add(UIObject* object);
-    void remove(UIObject* object);
+    QTip::Clock _clock;
 
-    friend class UIObject;
-    friend class Panel;
+    void setAddingChildren(QTip::Window* window, bool adding);
+
     friend class Dialog;
+    friend class UIContext;
+    friend class Panel;
 };
 
 #endif //QTIPUIKIT_UIKITMOD_H

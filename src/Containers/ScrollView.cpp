@@ -33,7 +33,6 @@ ScrollView::ScrollView(
 )
     : Panel(rect),
       _settings(settings) {
-    setAddingChildren(true);
     _horizontalScrollBar = new ScrollBar{
         QTip::Rect{
             5.0f,
@@ -50,7 +49,8 @@ ScrollView::ScrollView(
         },
         ScrollBarOrientation::Vertical
     };
-    setAddingChildren(false);
+    _horizontalScrollBar->parent = this;
+    _verticalScrollBar  ->parent = this;
     updateScrollBarsDimensions();
     updateScrollBars();
 }
@@ -171,7 +171,7 @@ bool ScrollView::y() const {
     return _settings.direction == ScrollDirection::Both || _settings.direction == ScrollDirection::Vertical;
 }
 
-void ScrollView::render(QTip::Window& window) {
+void ScrollView::renderImpl(QTip::Window& window) {
     QTip::RenderTarget target{
         window.getRenderer(),
         _contentSize

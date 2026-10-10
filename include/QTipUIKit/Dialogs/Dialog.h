@@ -15,7 +15,6 @@ public:
 
     ~Dialog() override;
 
-    void render(QTip::Window& window) override;
     bool handleEvent(const SDL_Event& event) override;
 
     [[nodiscard]] QTip::Point minimumSize() const override;
@@ -61,6 +60,9 @@ private:
     ResizeHandler _buttons_resize_handler;
 
     friend class UIKitMod;
+
+protected:
+    void renderImpl(QTip::Window& window) override;
 };
 
 

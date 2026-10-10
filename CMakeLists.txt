@@ -48,6 +48,9 @@ add_library(QTipUIKit STATIC
         include/QTipUIKit/Containers/List.h
         include/QTipUIKit/Widgets/PieChart/PieChart.h
         include/QTipUIKit/Widgets/PieChart/PieChart.tpp
+        src/UIContext.cpp
+        include/QTipUIKit/UIContext.h
+        src/UIObject.cpp
 )
 
 add_library(QTipUIKit::QTipUIKit ALIAS QTipUIKit)

@@ -31,8 +31,6 @@ public:
 
     bool handleEvent(const SDL_Event& event) override;
 
-    void render(QTip::Window& window) override;
-
     [[nodiscard]] QTip::Point minimumSize() const override;
     [[nodiscard]] QTip::Point preferredSize() const override;
 
@@ -55,6 +53,9 @@ private:
     bool _disabled = false;
 
     static void renderCheckmark(QTip::Window& window, QTip::Rect rect);
+
+protected:
+    void renderImpl(QTip::Window& window) override;
 };
 
 #endif //QTIPUIKIT_CHECKBOX_H

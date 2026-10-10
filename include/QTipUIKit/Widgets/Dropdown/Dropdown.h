@@ -46,7 +46,6 @@ public:
     size_t selectedIndex() const;
     const T* selectedItem() const;
 
-    void render(QTip::Window& window) override;
     bool handleEvent(const SDL_Event& event) override;
 
     void resize(QTip::Point size) override;
@@ -85,6 +84,9 @@ private:
     std::function<void(const T&, size_t)> _onChange;
 
     bool _active = false;
+
+protected:
+    void renderImpl(QTip::Window& window) override;
 };
 
 #include "Dropdown.tpp"

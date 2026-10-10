@@ -71,7 +71,7 @@ bool Checkbox::handleEvent(const SDL_Event& event) {
     return true;
 }
 
-void Checkbox::render(QTip::Window& window) {
+void Checkbox::renderImpl(QTip::Window& window) {
     switch (_state) {
     case CheckboxState::Normal:
         window->setRenderColor(_style.color);

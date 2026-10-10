@@ -15,8 +15,8 @@ Box::Box(QTip::Rect rect, Settings settings)
     layout();
 }
 
-void Box::render(QTip::Window& window) {
-    Panel::render(window);
+void Box::renderImpl(QTip::Window& window) {
+    Panel::renderImpl(window);
 }
 
 bool Box::handleEvent(const SDL_Event& event) {

@@ -47,7 +47,6 @@ public:
 
     void clear() override;
 
-    void render(QTip::Window& window) override;
     bool handleEvent(const SDL_Event& event) override;
 
     [[nodiscard]] QTip::Point minimumSize() const override;
@@ -94,6 +93,8 @@ protected:
     void onAddObject(UIObject* object) override;
 
     bool computingLayout = false;
+
+    void renderImpl(QTip::Window& window) override;
 
 private:
     [[nodiscard]] float mainAxis(QTip::Point point) const;

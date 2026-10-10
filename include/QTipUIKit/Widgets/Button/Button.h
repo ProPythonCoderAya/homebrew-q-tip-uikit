@@ -34,8 +34,6 @@ public:
 
     bool handleEvent(const SDL_Event& event) override;
 
-    void render(QTip::Window& window) override;
-
     void setText(std::string text);
     [[nodiscard]] const std::string& text() const;
 
@@ -62,6 +60,9 @@ private:
     std::function<void()> _onClick;
 
     bool _disabled = false;
+    
+protected:
+    void renderImpl(QTip::Window& window) override;
 };
 
 #endif //QTIPUIKIT_BUTTON_H

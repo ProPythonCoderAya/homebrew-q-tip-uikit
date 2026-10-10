@@ -26,8 +26,6 @@ public:
 
     ~Textbox() override;
 
-    void render(QTip::Window& window) override;
-
     bool handleEvent(const SDL_Event& event) override;
 
     void setActive(bool active);
@@ -183,6 +181,9 @@ private:
 
         return QTip::Point{x, y};
     }, &_rect, &_text};
+
+protected:
+    void renderImpl(QTip::Window& window) override;
 };
 
 #endif //QTIP_TEXTBOX_H

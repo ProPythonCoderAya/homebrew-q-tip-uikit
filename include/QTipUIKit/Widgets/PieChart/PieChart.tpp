@@ -119,7 +119,7 @@ T* PieChart<T>::hoveredItem() const {
 }
 
 template <typename T>
-void PieChart<T>::render(QTip::Window& window) {
+void PieChart<T>::renderImpl(QTip::Window& window) {
     double startAngle = -M_PI_2;
 
     auto [width, height] = _rect.size;

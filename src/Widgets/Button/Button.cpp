@@ -74,7 +74,7 @@ bool Button::handleEvent(const SDL_Event& event) {
     return true;
 }
 
-void Button::render(QTip::Window& window) {
+void Button::renderImpl(QTip::Window& window) {
     switch (_state) {
     case ButtonState::Normal:
         window->setRenderColor(_style.color);

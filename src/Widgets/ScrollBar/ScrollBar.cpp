@@ -91,7 +91,7 @@ float ScrollBar::thumbLength() const {
     );
 }
 
-void ScrollBar::render(QTip::Window& window) {
+void ScrollBar::renderImpl(QTip::Window& window) {
     const float trackLengthValue = trackLength();
     const float thumbLengthValue = thumbLength();
 

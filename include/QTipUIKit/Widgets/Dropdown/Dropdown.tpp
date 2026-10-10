@@ -78,7 +78,7 @@ const T* Dropdown<T>::selectedItem() const {
 }
 
 template <typename T>
-void Dropdown<T>::render(QTip::Window& window) {
+void Dropdown<T>::renderImpl(QTip::Window& window) {
     window->setRenderColor({50, 50, 50});
 
     window->renderRoundedRect(_rect, 10);

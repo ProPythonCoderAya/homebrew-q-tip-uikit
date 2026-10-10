@@ -6,19 +6,21 @@
 
 #include <SDL3/SDL_events.h>
 
+#include "QTipUIKit/UIKitMod.h"
+
 Dialog::Dialog() : UIObject(NoRegTag{}), _content({}), _buttons({}), _lastWindowSize() { // dont reg in global
     _buttons.setSizing(Sizing::Stretch);
 }
 
-Dialog::~Dialog() {
-    // here we should call end(), but I won't.
-}
+Dialog::~Dialog() = default;
 
-void Dialog::render(QTip::Window& window) {
+void Dialog::renderImpl(QTip::Window& window) {
     layout();
 
+    window->setBlendMode(QTip::RenderBlendMode::Blend);
     window->setRenderColor({0, 0, 0, 128});
     window->renderRect({0, 0, window.size()});
+    window->resetBlendMode();
 
     window->setRenderColor({64, 64, 64, 255});
 
@@ -82,12 +84,10 @@ Dialog& Dialog::create(QTip::Window& window) {
 
     auto& manager = *UIKitMod::instance();
 
-    manager._dialogs.emplace_back(
-        &window,
+    return manager.addDialog(
+        window,
         std::move(dialog)
     );
-
-    return *manager._dialogs.back().second;
 }
 
 void Dialog::initialize(QTip::Window& window) {
@@ -98,13 +98,7 @@ void Dialog::initialize(QTip::Window& window) {
 void Dialog::end() {
     auto& manager = *UIKitMod::instance();
 
-    auto it = std::ranges::find_if(manager._dialogs.begin(), manager._dialogs.end(), [&](const auto& dialog) {
-        return dialog.second.get() == this;
-    });
-
-    if (it != manager._dialogs.end()) {
-        manager._dialogs.erase(it);
-    }
+    manager.removeDialog(*_window, this);
 }
 
 void Dialog::layout() {

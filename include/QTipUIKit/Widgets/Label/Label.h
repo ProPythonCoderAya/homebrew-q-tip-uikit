@@ -12,8 +12,6 @@ MODDABLE_DERIVED(Label, UIObject)
 public:
     Label(const std::string& text, QTip::Color color, QTip::Point position, const std::optional<QTip::Font>& font = std::nullopt, bool centered = false);
 
-    void render(QTip::Window& window) override;
-
     [[nodiscard]] QTip::Point minimumSize() const override;
     [[nodiscard]] QTip::Point preferredSize() const override;
 
@@ -31,6 +29,9 @@ private:
     QTip::Font _font;
     bool _centered;
     QTip::Point _position{};
+
+protected:
+    void renderImpl(QTip::Window& window) override;
 };
 
 #endif //QTIPUIKIT_LABEL_H

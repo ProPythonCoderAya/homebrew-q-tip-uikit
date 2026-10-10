@@ -12,7 +12,6 @@ class Panel : public UIObject {
 public:
     Panel(QTip::Rect rect);
 
-    void render(QTip::Window& window) override;
     bool handleEvent(const SDL_Event& event) override;
 
     void resize(QTip::Rect rect);
@@ -20,11 +19,9 @@ public:
 
     template<std::derived_from<UIObject> T, typename... Args>
     T& add(Args&&... args) {
-        UIKitMod::instance()->_addingChildren = true;
         auto object = std::make_unique<T>(
             std::forward<Args>(args)...
         );
-        UIKitMod::instance()->_addingChildren = false;
 
         T* result = object.get();
         _objects.push_back(std::move(object));
@@ -57,7 +54,8 @@ protected:
     std::vector<UIObject*> _sortedObjects() const;
 
     virtual void onAddObject(UIObject* object);
-    static void setAddingChildren(bool addingChildren);
+
+    void renderImpl(QTip::Window& window) override;
 };
 
 #endif //QTIPUIKIT_PANEL_H

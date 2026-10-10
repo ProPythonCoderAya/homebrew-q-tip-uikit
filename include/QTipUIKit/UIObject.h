@@ -9,8 +9,7 @@
 #include <Q-Tip/Window/Window.h>
 #include <Q-Tip/Mods/ModLoader/ModLoader.h>
 
-#include "QTipUIKit/UIKitMod.h"
-
+class UIContext;
 union SDL_Event;
 struct SDL_Window;
 
@@ -18,13 +17,9 @@ class UIObject {
 MODDABLE_ROOT(UIObject)
 
 public:
-    UIObject() {
-        UIKitMod::instance()->add(this);
-    }
+    UIObject() = default;
 
-    virtual ~UIObject() {
-        UIKitMod::instance()->remove(this);
-    }
+    virtual ~UIObject();
 
     int zIndex() const {return _z;}
     void setZIndex(const int z) {
@@ -33,7 +28,11 @@ public:
             parent->_zVersion++;
     }
 
-    virtual void render(QTip::Window& window) = 0;
+    void render(QTip::Window& window) {
+        regWindow(window);
+        renderImpl(window);
+    }
+
     // returns true to continue propagating, false if consumed
     virtual bool handleEvent(const SDL_Event& event) {return true;}
 
@@ -57,12 +56,20 @@ protected:
     }
     int _z;
 
+    virtual void renderImpl(QTip::Window& window) = 0;
+
+    QTip::Window* _window = nullptr;
+    UIContext* _context = nullptr;
+
     // Mostly only for panels, just helps with sorting
     int _zVersion = 0;
 
     struct NoRegTag {};
 
     explicit UIObject(NoRegTag) : _z(0) {}
+
+private:
+    void regWindow(QTip::Window& window);
 };
 
 #endif //QTIP_UIOBJECT_H

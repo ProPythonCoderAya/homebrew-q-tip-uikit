@@ -96,7 +96,6 @@ public:
     size_t hoveredIndex() const;
     T* hoveredItem() const;
 
-    void render(QTip::Window& window) override;
     bool handleEvent(const SDL_Event& event) override;
 
     QTip::Point minimumSize() const override;
@@ -123,6 +122,9 @@ private:
 
     QTip::Font font{Detail::defaultFontPath(), 16};
     QTip::Point mousePosition;
+
+protected:
+    void renderImpl(QTip::Window& window) override;
 };
 
 template <typename T>

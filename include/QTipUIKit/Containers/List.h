@@ -24,7 +24,6 @@ public:
 
     ~List() override = default;
 
-    void render(QTip::Window& window) override;
     bool handleEvent(const SDL_Event& event) override;
 
     void setDirection(Direction direction);
@@ -35,6 +34,8 @@ public:
 
 protected:
     void onAddObject(UIObject* object) override;
+
+    void renderImpl(QTip::Window& window) override;
 
 private:
     Direction _direction;

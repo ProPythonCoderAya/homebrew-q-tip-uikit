@@ -7,6 +7,7 @@
 #include <Q-Tip/Graphics/RenderTarget.h>
 #include <SDL3/SDL_events.h>
 
+#include "QTipUIKit/UIKitMod.h"
 #include "QTipUIKit/Internal/Helpers.h"
 
 Panel::Panel(const QTip::Rect rect) {
@@ -14,7 +15,7 @@ Panel::Panel(const QTip::Rect rect) {
     _preferredRect = rect;
 }
 
-void Panel::render(QTip::Window& window) {
+void Panel::renderImpl(QTip::Window& window) {
     QTip::RenderTarget target{window.getRenderer(), _rect.size};
 
     window->setTarget(target);
@@ -128,8 +129,4 @@ void Panel::onAddObject(UIObject*) {
         _rect.size = minimumSize();
         _preferredRect.size = minimumSize();
     }
-}
-
-void Panel::setAddingChildren(bool addingChildren) {
-    UIKitMod::instance()->_addingChildren = addingChildren;
 }

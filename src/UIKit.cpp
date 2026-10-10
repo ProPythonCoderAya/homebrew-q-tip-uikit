@@ -1,9 +1,13 @@
+#include <cassert>
 #include <ranges>
+#include <Q-Tip/QTip.h>
 
 #include "QTipUIKit/UIKitMod.h"
 #include "QTipUIKit/UIObject.h"
 #include "QTipUIKit/Internal/Helpers.h"
 #include "QTipUIKit/Dialogs/Dialog.h"
+
+#define UICONTEXT std::shared_ptr<UIContext>
 
 UIKitMod::UIKitMod() = default;
 
@@ -18,60 +22,72 @@ std::string_view UIKitMod::name() const {
 }
 
 void UIKitMod::init() {
+    [[maybe_unused]] const bool
+        _moddable_variable_registration_0 = [] {
+            QTip::Window::extendVariable<UICONTEXT>("context");
+            return true;
+    }();
 }
 
 void UIKitMod::shutdown() {
-    for (const auto& dialog : _dialogs | std::views::values) {
-        dialog->end();
-    }
 }
 
 void UIKitMod::handleEvent(const SDL_Event& event) {
-    if (!_dialogs.empty()) {
-        _dialogs.back().second->handleEvent(event);
-        return;
-    }
-    for (auto* object : _objects) {
-        if (!object) {
-            std::cerr << "UIKit: NULL object in _objects!\n";
-            continue;
-        }
+    SDL_Window* windowID = SDL_GetWindowFromEvent(&event);
+    auto windows = QTip::QTipRuntime::windows();
+    auto it = std::ranges::find_if(windows, [&] (const auto& window) {
+        return static_cast<SDL_Window*>(*window) == windowID;
+    });
 
-        object->handleEvent(event);
+    if (it != windows.end()) {
+        auto& window = **it;
+        auto c = context(window);
+        assert(c && "Window has no UIContext");
+        c->handleEvent(event);
     }
 }
 
 void UIKitMod::beforePresent(QTip::Window& window) {
-    double dt = clock.elapsedFromLastCall() / 1000.0;
-    for (auto object : _objects) {
-        object->tick(clock, dt);
-    }
-
-    for (auto& [w, dialog] : _dialogs) {
-        if (w == &window) {
-            dialog->render(window);
-            dialog->tick(clock, dt);
-        }
-    }
+    double dt = _clock.elapsedFromLastCall() / 1000.0;
+    if (auto c = context(window))
+        c->beforePresent(window, _clock, dt);
 }
+
+void UIKitMod::windowCreated(QTip::Window& window) {
+    context(window);
+}
+
+void UIKitMod::windowDestroyed(QTip::Window& window) {}
 
 UIKitMod* UIKitMod::instance() {
     return QTip::ModLoader::mod<UIKitMod>();
 }
 
-void UIKitMod::add(UIObject* object) {
-    if (_addingChildren) return;
-    _objects.push_back(object);
+UIContext* UIKitMod::context(QTip::Window& window) {
+    auto& storedContext = window.v<UICONTEXT>("context");
+    if (!storedContext) {
+        storedContext = std::make_shared<UIContext>();
+        storedContext->_window = &window;
+    }
+    return storedContext.get();
 }
 
-void UIKitMod::remove(UIObject* object) {
-    const auto it = std::ranges::find_if(_objects,
-         [&object](const UIObject* ptr) {
-             return ptr == object;
-         }
-    );
+Dialog& UIKitMod::addDialog(QTip::Window& window, std::unique_ptr<Dialog> dialog) {
+    auto c = context(window);
+    c->_dialogs.push_back(std::move(dialog));
+    return *c->_dialogs.back();
+}
 
-    if (it != _objects.end()) {
-        _objects.erase(it);
+void UIKitMod::removeDialog(QTip::Window& window, Dialog* dialog) {
+    auto manager = context(window);
+    auto it = std::ranges::find_if(manager->_dialogs.begin(), manager->_dialogs.end(), [&](const auto& d) {
+        return d.get() == dialog;
+    });
+    if (it != manager->_dialogs.end()) {
+        manager->removeDialog(dialog);
     }
+}
+
+void UIKitMod::setAddingChildren(QTip::Window* window, bool adding) {
+    context(*window)->_addingChildren = adding;
 }
