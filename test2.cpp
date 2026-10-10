@@ -41,8 +41,8 @@ int main() {
             window->setRenderColor(Color::black);
             window->clear();
 
-            button.renderImpl(window);
-            list.renderImpl(window);
+            button.render(window);
+            list.render(window);
 
             window->present();
         }
@@ -56,7 +56,7 @@ int main() {
         window->setRenderColor(Color::black);
         window->clear();
 
-        button.renderImpl(window);
+        button.render(window);
 
         window->present();
     }
